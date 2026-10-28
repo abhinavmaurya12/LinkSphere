@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LinkSphere v1.9.0 – A global sphere for professional networking</title>
+<style>
+:root{--bg:#f3f2ef;--card:#fff;--tx:#191919;--mu:#666;--bd:#e0dfdc;--pr:#0a66c2;--hv:#eef3f8;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--card:#1b1f23;--tx:#e9e9e9;--mu:#9a9a9a;--bd:#38434f;--pr:#71b7fb;--hv:#283340;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--card:#1b1f23;--tx:#e9e9e9;--mu:#9a9a9a;--bd:#38434f;--pr:#71b7fb;--hv:#283340;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:14px/1.4 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100%}
+button{font:inherit;cursor:pointer;color:inherit}
+input,textarea{font:inherit;color:var(--tx);background:var(--card)}
+nav{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;padding:6px 16px}
+.logo{background:var(--pr);color:var(--card);font-weight:800;border-radius:4px;padding:2px 7px;font-size:20px}
+nav input{background:var(--hv);border:0;border-radius:4px;padding:8px 12px;width:220px;max-width:30vw}
+.tabs{display:flex;margin-left:auto;overflow-x:auto}
+.tab{position:relative;background:none;border:0;border-bottom:2px solid transparent;padding:4px 12px;color:var(--mu);font-size:11px;text-align:center}
+.tab b{display:block;font-size:18px}.tab.on{color:var(--tx);border-color:var(--tx)}
+.bdg{position:absolute;top:0;right:6px;background:#cc1016;color:#fff;border-radius:9px;font-size:10px;padding:0 5px}
+main{max-width:1128px;margin:24px auto;padding:0 12px;display:grid;grid-template-columns:225px minmax(0,560px) 300px;gap:24px;justify-content:center}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px;margin-bottom:8px}
+.av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;flex:none}
+.prof{padding:0;overflow:hidden;text-align:center}.cover{height:56px;background:linear-gradient(120deg,#0a66c2,#7fc15e)}
+.prof .av{width:68px;height:68px;margin:-34px auto 8px;border:2px solid var(--card);font-size:24px}.prof .in{padding:0 12px 12px}
+.cover{background-size:cover;background-position:center}.av.ph{background-size:cover;background-position:center;font-size:0}.pw{position:relative;width:max-content}.cam{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:0;background:var(--card);color:var(--tx);box-shadow:0 1px 4px #0005;font-size:16px;padding:0}.pw .cam{width:28px;height:28px;right:-4px;top:auto;bottom:-2px;font-size:13px}.cw{position:relative}.ver{position:fixed;left:8px;bottom:6px;font-size:11px;color:var(--mu);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:1px 8px;z-index:5;pointer-events:none}.pim{width:100%;border-radius:8px;margin-top:8px;display:block}.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px}.mnw{position:relative;display:inline-block}.mnu{position:absolute;top:100%;left:0;z-index:20;background:var(--card);border:1px solid var(--bd);border-radius:8px;min-width:210px;box-shadow:0 4px 14px #0004;padding:4px;margin-top:4px}.mnu button{display:block;width:100%;text-align:left;background:none;border:0;padding:8px 10px;border-radius:4px;color:var(--tx)}.mnu button:hover{background:var(--hv)}.mu{color:var(--mu);font-size:12px}.row{display:flex;gap:10px;align-items:center}
+textarea,.fi{width:100%;border:1px solid var(--bd);border-radius:8px;padding:10px 14px;resize:none}
+.btn{border:1px solid var(--pr);color:var(--pr);background:none;border-radius:20px;padding:5px 14px;font-weight:600}
+.btn:hover{background:var(--hv)}.btn.fill{background:var(--pr);color:var(--card)}.btn.big{width:100%;padding:10px;font-size:16px}.btn:disabled{opacity:.55;cursor:default}
+.act{display:flex;border-top:1px solid var(--bd);margin-top:8px;padding-top:4px}
+.act button{flex:1;background:none;border:0;padding:8px;border-radius:4px;color:var(--mu);font-weight:600}
+.act button:hover{background:var(--hv)}.liked{color:var(--pr)!important}
+.rw{position:relative;flex:1;display:flex}.rw>button:first-child{flex:1}.rw>button.rpk{flex:none;padding:8px 4px;font-size:10px}
+.rp{display:none;position:absolute;bottom:100%;left:0;background:var(--card);border:1px solid var(--bd);border-radius:26px;padding:4px 6px;gap:2px;box-shadow:0 4px 14px #0004;z-index:4}
+.rw:hover .rp,.rp.o{display:flex}.act .rp button{flex:none;padding:2px 6px;font-size:22px;transition:transform .12s}.act .rp button:hover{transform:scale(1.3)}
+.nm{background:none;border:0;padding:0;color:var(--tx);font-weight:700}.nm:hover{text-decoration:underline;color:var(--pr)}
+.post p{margin:10px 0;white-space:pre-wrap}.cm{background:var(--hv);border-radius:8px;padding:8px 10px;margin-top:6px}
+.item{padding:10px 0;border-bottom:1px solid var(--bd)}.item:last-child{border:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}.grid .card{text-align:center}
+.chat{display:grid;grid-template-columns:200px 1fr;min-height:340px}.chat .l{border-right:1px solid var(--bd);padding-right:8px}
+.chat .l button{display:flex;gap:8px;align-items:center;width:100%;background:none;border:0;padding:8px;text-align:left;border-radius:6px}
+.chat .l button.on,.chat .l button:hover{background:var(--hv)}
+.msgs{display:flex;flex-direction:column;gap:6px;padding:0 12px;flex:1;overflow:auto;max-height:280px}
+.m{max-width:75%;padding:8px 12px;border-radius:14px;background:var(--hv)}.m.me{align-self:flex-end;background:var(--pr);color:var(--card)}
+.send{display:flex;gap:8px;padding:12px 0 0 12px}.send input{flex:1;border:1px solid var(--bd);border-radius:20px;padding:8px 14px}
+.pills{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}.pill{border:1px solid var(--bd);border-radius:14px;padding:2px 12px}
+.auth{max-width:400px;margin:6vh auto;padding:0 12px}.auth .fi{margin:6px 0}.err{color:#cc1016;min-height:20px;font-size:13px}
+.lnk{background:none;border:0;color:var(--pr);font-weight:600}
+.mgm{display:none}
+.mg button{display:flex;justify-content:space-between;width:100%;padding:8px 0;background:none;border:0;text-align:left;color:var(--mu);font-weight:600}
+.mg button:hover{color:var(--tx)}.mg button.on{color:var(--pr)}
+.fl{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;justify-content:center;padding:8px}
+.fl button{background:none;border:0;padding:0;font-size:12px;color:var(--mu)}.fl button:hover{text-decoration:underline;color:var(--pr)}
+.gm{display:flex;align-items:center;gap:10px}.gm .ic{width:44px;height:44px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:22px;flex:none}
+@media(max-width:900px){.mgm{display:block}}
+aside{position:sticky;top:64px;align-self:start}
+.mo,.mbar,.mset{display:none}
+@media(max-width:700px){
+body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+input,textarea{font-size:16px}
+nav{padding:6px 10px;gap:8px}nav .logo,nav .tabs,nav #th,nav #lo{display:none}
+nav input{flex:1;width:auto;max-width:none;border-radius:18px;padding:8px 14px}
+.mo{display:block}.mav{background:none;border:0;padding:0;border-radius:50%}.mav .av{width:34px;height:34px;font-size:13px;border:0}
+.mmsg{background:none;border:0;font-size:22px;padding:0 2px}
+main{margin:8px 0;padding:0;gap:0}
+.card{border-radius:0;border-left:0;border-right:0}
+.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px)}
+.mbar button{flex:1;background:none;border:0;border-top:2px solid transparent;padding:6px 0 4px;font-size:10px;color:var(--mu);position:relative}
+.mbar button b{display:block;font-size:20px;font-weight:400;line-height:1.2}.mbar button.on{color:var(--tx);border-color:var(--tx)}.mbar .bdg{right:20%}
+.mset{display:block}
+.ver{bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+}
+@media(max-width:900px){main{grid-template-columns:minmax(0,1fr)}aside{display:none}.chat{grid-template-columns:1fr}.chat .l{display:flex;border:0;overflow-x:auto}}
+nav{padding:0 max(12px,calc(50% - 564px));gap:8px;height:54px}
+nav .sbox{position:relative;flex:0 1 280px;margin-left:4px}
+nav .sbox svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:var(--mu);pointer-events:none}
+nav .sbox input{width:100%;max-width:none;padding:9px 12px 9px 36px;border-radius:4px}
+.tabs{align-items:stretch;overflow:visible;height:54px}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:74px;padding:0 10px;font-size:12px;height:100%;white-space:nowrap}
+.tab:hover{color:var(--tx)}
+.tab svg{width:24px;height:24px;fill:currentColor}
+.tab .av{width:24px;height:24px;font-size:10px;border:0}
+.tab .av.ph{font-size:0}
+.tab .bdg{top:4px;right:auto;left:50%;margin-left:4px}
+.vsep{width:1px;background:var(--bd);margin:8px 6px}
+.hw{position:relative;display:flex}
+.hdm{position:absolute;right:0;top:100%;width:260px;background:var(--card);border:1px solid var(--bd);border-radius:8px;box-shadow:0 6px 18px #0004;padding:12px;z-index:30;text-align:left;font-size:14px;color:var(--tx);white-space:normal}
+.hdm button:not(.btn){display:block;width:100%;text-align:left;background:none;border:0;padding:7px 8px;border-radius:4px;color:var(--mu)}
+.hdm button:not(.btn):hover{background:var(--hv);color:var(--tx)}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.bgrid button{text-align:center!important;display:flex!important;flex-direction:column;align-items:center;gap:2px;font-size:12px}
+.prem{background:none;border:0;color:#915907;font-size:12px;line-height:1.2;text-align:center;padding:0 8px;font-weight:600;text-decoration:underline}
+:root[data-theme="dark"] .prem{color:#e7a33e}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .prem{color:#e7a33e}}
+@media(max-width:1000px){.prem,.vsep{display:none}.tab{min-width:60px;padding:0 6px}nav .sbox{flex-basis:200px}}
+@media(max-width:700px){nav{padding:6px 10px;height:auto;gap:8px}nav .sbox{flex:1 1 auto}nav .sbox input{border-radius:18px}}
+.mbar svg{width:24px;height:24px;fill:currentColor;display:block;margin:0 auto 2px}
+.mbar .bdg{top:2px}
+.mmsg{position:relative}.mmsg svg{width:26px;height:26px;fill:var(--mu);display:block}
+.bk{position:fixed;inset:0;background:#0007;z-index:39;border:0;padding:0}
+.dr{position:fixed;top:0;left:0;bottom:0;width:80%;max-width:320px;background:var(--card);z-index:40;box-shadow:4px 0 18px #0006;overflow:auto}
+.dri{display:flex;gap:12px;width:100%;padding:12px 0;background:none;border:0;text-align:left;font-size:15px;color:var(--tx)}
+.cmod{position:fixed;top:8vh;left:50%;transform:translateX(-50%);width:min(560px,94vw);background:var(--card);border-radius:10px;padding:16px;z-index:41;box-shadow:0 8px 30px #0007;max-height:84vh;overflow:auto}
+@media(max-width:900px){.chat .l{align-items:center;gap:6px}.chat .l .fi{min-width:150px;flex:none;width:150px}.chat .l #cl2{display:flex}.chat .l #cl2 button{width:auto;flex:none}}
+main.wide{grid-template-columns:minmax(0,1056px)}main.wide aside{display:none}
+.mw{display:grid;grid-template-columns:340px minmax(0,1fr);height:calc(100vh - 100px);min-height:480px;max-height:800px;padding:0;overflow:hidden;margin-bottom:0}
+.ml{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--bd)}
+.mr{display:flex;flex-direction:column;min-height:0;min-width:0}
+.mhd,.mrh{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--bd)}
+.msr{padding:8px 12px 0}.msr .fi{border-radius:4px;background:var(--hv);border:0;padding:8px 12px}
+.mfs{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;border-bottom:1px solid var(--bd)}
+.mf{flex:none;border:1px solid var(--bd);background:none;border-radius:16px;padding:3px 12px;font-weight:600;color:var(--mu);white-space:nowrap}
+.mf:hover{background:var(--hv)}.mf.on{background:#01754f;border-color:#01754f;color:#fff}
+.cls{flex:1;overflow:auto;min-height:0}
+.ci{display:flex;gap:10px;width:100%;padding:12px 12px 12px 8px;background:none;border:0;border-left:4px solid transparent;text-align:left;align-items:flex-start}
+.ci:hover{background:var(--hv)}.ci.on{background:var(--hv);border-left-color:#01754f}
+.cbd{flex:1;min-width:0;display:flex;flex-direction:column}
+.ct{display:flex;gap:6px;align-items:baseline}.ct b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ct b.rd{font-weight:600}.ct .mu{margin-left:auto;flex:none}
+.cs{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}.cs.ub{color:var(--tx);font-weight:600}
+.ib{background:none;border:0;border-radius:50%;width:34px;height:34px;font-size:16px;color:var(--mu);padding:0;flex:none}.ib:hover{background:var(--hv)}
+.mbk{display:none;font-size:20px}
+.mw .msgs{display:block;max-height:none;min-height:0;flex:1;overflow-y:auto;padding:12px 16px}
+.intro{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;padding:12px 0 18px;border-bottom:1px solid var(--bd);margin-bottom:8px}.intro .av{width:72px;height:72px;font-size:24px;margin-bottom:6px}
+.dsep{text-align:center;margin:14px 0 4px;position:relative}.dsep:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px solid var(--bd)}.dsep span{position:relative;background:var(--card);padding:0 10px;color:var(--mu);font-size:12px}
+.mh{display:flex;gap:8px;align-items:center;margin-top:12px}.mh .av{width:32px;height:32px;font-size:12px}
+.mt{margin:2px 0 0 40px;white-space:pre-wrap;word-break:break-word}
+.cmp{border-top:1px solid var(--bd);padding:10px 12px}
+.cmp textarea{border-radius:8px;background:var(--hv);border:0;min-height:40px;max-height:120px;padding:10px 12px;overflow-y:auto}
+.emo{display:flex;gap:2px;margin-bottom:6px;flex-wrap:wrap}.emo button{background:none;border:0;font-size:20px;padding:2px 4px;border-radius:4px}.emo button:hover{background:var(--hv)}
+@media(max-width:700px){
+main.wide{margin:0}
+.mw{display:block;height:auto;min-height:calc(100vh - 130px);max-height:none;border:0;border-radius:0}
+.mw .ml{display:block;border:0}.mw .cls{overflow:visible}
+.mw .mr{display:none}
+.mw.co .ml{display:none}
+.mw.co{display:flex;flex-direction:column;height:100vh;height:100dvh;min-height:0;margin:0}
+.mw.co .mr{display:flex;flex:1}
+.mbk{display:block}
+body.mco{padding-bottom:0}body.mco .mbar,body.mco nav{display:none}
+.cmp{padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+}
+.md{opacity:0;font-size:12px;margin-left:8px;color:var(--mu)}.mt:hover .md,.md:focus{opacity:1}
+@media(hover:none){.md{opacity:.5}}
+select.fi{background:var(--card);color:var(--tx);font:inherit}
+.fl2{display:block;font-size:12px;color:var(--mu);margin:10px 0 3px}
+.ibp{position:absolute;right:8px;top:6px}
+.cmod .fi{margin:0}
+.sqi{width:48px;height:48px;border-radius:6px;background:var(--hv);display:grid;place-items:center;font-size:22px;flex:none}
+@media(max-width:700px){select.fi{font-size:16px}}
+.act button{display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.act .mnw{display:block;flex:1;position:relative}.act .mnw>button{width:100%;flex:none}
+.act .mnu{min-width:270px;left:auto;right:0}
+.act .mnu button{justify-content:flex-start;text-align:left;color:var(--tx);font-weight:400;white-space:normal}
+.act .mnu small{color:var(--mu);font-size:12px}
+.ic{width:22px;height:22px;flex:none}
+.act>button,.act .rw>button:not(.rpk),.act .mnw>button{min-height:44px;font-size:14px}
+@media(hover:hover){.rw>button.rpk{display:none}}
+.rxs{display:flex;align-items:center;gap:6px;margin-top:8px}
+.rxi{display:flex;margin-right:4px}.rxi span{width:18px;height:18px;border-radius:50%;background:var(--card);border:1px solid var(--bd);display:grid;place-items:center;font-size:11px;margin-right:-5px}
+.pmb{font-size:18px;padding:0 6px;color:var(--mu)}
+.cbub{background:var(--hv);border-radius:0 10px 10px 10px;padding:8px 12px}
+.cmr .av{width:32px;height:32px;font-size:12px}
+.cin{display:flex;gap:8px}
+.fi2{flex:1;min-width:0;border:1px solid var(--bd);border-radius:20px;padding:8px 14px;background:var(--card);color:var(--tx)}
+.repc{border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:8px}
+.qa{flex:1;background:none;border:0;border-radius:4px;padding:8px;font-weight:600;color:var(--mu)}.qa:hover{background:var(--hv)}
+.ctx{font-size:12px;color:var(--mu);padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--bd)}
+.more{background:none;border:0;color:var(--mu);padding:0}.more:hover{color:var(--pr);text-decoration:underline}
+@media(max-width:700px){.act>button,.act .rw>button:not(.rpk),.act .mnw>button{flex-direction:column;gap:2px;font-size:12px;padding:6px 2px}.act .rw{flex:1}.act .rw>button:not(.rpk){flex:1}}
+@media print{nav,.mbar,aside,.ver,.btn,.cam,.mnw,.lnk,.mset{display:none!important}body{background:#fff}main{display:block;margin:0}.card{break-inside:avoid}}
+
+.dv .in{padding:0 16px 16px}.dv .dvav{width:84px;height:84px;margin:-42px auto 8px;border:3px solid var(--card);font-size:28px;background:linear-gradient(135deg,#0a66c2,#7fc15e)}
+.dv h2{font-size:22px}.dvp{margin:10px auto 12px;max-width:440px}
+.dvr{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}.dvl .dvr{justify-content:flex-start}
+.dvc a.btn,.dv a.btn{display:inline-block;text-decoration:none}.dvc p{margin:6px 0 10px}.dvu{margin:6px 0 10px 18px}.dvu li{margin:4px 0}.dvc .st{font-weight:700;margin-top:6px}
+
+:root{--bg:#f4f2ee}body{font-family:-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+nav{box-shadow:0 1px 0 rgba(0,0,0,.08);padding:4px 24px}.logo{border-radius:4px;font-size:22px;padding:1px 6px}
+nav .sbox input,nav input{border-radius:4px;background:var(--hv);height:34px}
+.tab{padding:6px 14px;font-size:12px;border-bottom-width:3px}.tab:hover{color:var(--tx)}.tab.on{border-color:var(--tx)}
+.card{border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.04);padding:16px}
+.btn{font-weight:600;border-width:1px;padding:5px 16px}.btn.fill{background:var(--pr);border-color:var(--pr)}
+.post .act button{border-radius:6px}.item:last-child{border:0}
+.prof .cover{height:60px}
+@media print{nav,aside,.noprint,.mgm,.mbar{display:none!important}main{display:block!important;margin:0}body{background:#fff}.card{box-shadow:none;border:0}}
+</style></head><body><div id="app"></div>
+<script>
+{try{const t=JSON.parse(localStorage.getItem('lu_theme'));if(t)document.documentElement.dataset.theme=t}catch(e){}}
+const $=s=>document.querySelector(s),mem={},col=['#7a3fb5','#c0392b','#16875f','#d98200','#2c6fbb','#8e5a2b'];
+const G=k=>{let v=null;try{v=JSON.parse(localStorage.getItem(k))}catch(e){}return v??mem[k]??null},W=(k,v)=>{mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ini=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const isMe=n=>U&&D&&D.photo&&n===U.name,cvr=()=>D&&D.cover?`background-image:url(${D.cover})`:'';
+const av=(n,i=0)=>isMe(n)?`<div class="av ph" style="background-image:url(${D.photo})"></div>`:`<div class="av" style="background:${col[(i||n.length)%6]}">${esc(ini(n))}</div>`;
+const PEOPLE=[['Neha Gupta','UI Designer at Adobe'],['Aman Singh','Backend Engineer at Paytm'],['Kavya Nair','Data Analyst at Deloitte'],['Rohit Mehra','DevOps Engineer at Wipro'],['Sana Khan','Product Manager at Flipkart'],['Vikram Rao','Java Developer at TCS'],['Priya Sharma','Software Engineer at Infosys'],['Rahul Verma','Frontend Developer at Zoho']];
+const PX={'Neha Gupta':{loc:'Delhi, India',about:'I design clean, accessible interfaces for creative tools. Love design systems and user research.',skills:['Figma','UI Design','Prototyping','Design Systems']},
+'Aman Singh':{loc:'Noida, India',about:'Building reliable payment APIs at scale. Interested in distributed systems and clean architecture.',skills:['Java','Spring Boot','Kafka','PostgreSQL']},
+'Kavya Nair':{loc:'Gurugram, India',about:'Turning messy data into decisions. Dashboards, SQL and storytelling.',skills:['SQL','Power BI','Python','Excel']},
+'Rohit Mehra':{loc:'Pune, India',about:'DevOps engineer focused on CI/CD, observability and cloud cost optimisation.',skills:['Docker','Kubernetes','AWS','Terraform']},
+'Sana Khan':{loc:'Bengaluru, India',about:'Product manager obsessed with customer problems and fast experiments.',skills:['Product Strategy','Roadmapping','Analytics','Agile']},
+'Vikram Rao':{loc:'Hyderabad, India',about:'Java developer working on enterprise banking platforms. Mentor for freshers.',skills:['Java','Hibernate','Microservices','JUnit']},
+'Priya Sharma':{loc:'Bengaluru, India',about:'Software engineer shipping microservices. Writing about observability and testing.',skills:['Spring Boot','Microservices','Observability','Docker']},
+'Rahul Verma':{loc:'Chennai, India',about:'Frontend developer who believes in simple, fast, hand-crafted web pages.',skills:['JavaScript','HTML/CSS','React','Web Performance']}};
+const COMP=['TechHire India','Zoho','Paytm','Adobe','Flipkart','Deloitte'];
+const R=[['👍','Like'],['🎉','Celebrate'],['🤝','Support'],['💡','Insightful'],['😂','Funny']];
+const JOBS=[['Java Full Stack Developer','TechHire India','Noida · Hybrid','₹6–10 LPA','Build and maintain Java/Spring Boot services and a modern web front end. 0–2 years experience. Strong OOP and SQL fundamentals.'],['Frontend Engineer','Zoho','Chennai · On-site','₹8–14 LPA','Craft fast, accessible UIs with JavaScript. Experience with component architectures and performance tuning is a plus.'],['Spring Boot Developer','Paytm','Noida · Hybrid','₹7–12 LPA','Design REST APIs for payment flows, write tests, and work with Kafka and relational databases.'],['Web Developer Intern','Adobe','Remote','₹30k/mo','6-month internship working with a product team. Great for students with HTML, CSS and JavaScript projects.'],['Software Engineer I','Flipkart','Bengaluru · On-site','₹12–18 LPA','Own features end to end for high-traffic e-commerce systems. Data structures and algorithms are important.'],['Data Analyst','Deloitte','Gurugram · Hybrid','₹6–9 LPA','Analyse client data using SQL and BI tools and present insights to stakeholders.']];
+const POLLPOST={id:4,n:'LinkSphere News',r:'Community poll · 12,000 followers',t:'Which backend framework are you using most in 2026?',poll:[['Spring Boot',120],['Node.js',98],['Django / FastAPI',41],['.NET',37]],l:64,c:[],liked:0,time:'3h'};
+[['Java Backend Developer','CodeNest Technologies','Noida · Hybrid','₹8–14 LPA','Build REST APIs with Spring Boot and PostgreSQL. 1–3 years of experience and strong Java fundamentals.'],
+['UI/UX Designer','Pixel Forge Studio','Remote','₹6–11 LPA','Design web and mobile interfaces in Figma. Portfolio required.'],
+['Cloud Engineer','CloudBridge Systems','Pune · Hybrid','₹10–18 LPA','Manage AWS infrastructure, CI/CD pipelines and monitoring. Terraform and Docker experience preferred.'],
+['Data Analyst Trainee','DataLeaf Analytics','Gurugram · On-site','₹3–5 LPA','Freshers welcome. SQL, Excel and basic Python needed.'],
+['React Developer','NextWave Digital','Bengaluru · Hybrid','₹9–16 LPA','Build fast single-page apps with React and TypeScript. Testing experience is a plus.'],
+['Software Engineer Intern','Quantix Labs','Remote · Internship','₹20–30K/month','Work with senior engineers on real features. Final-year students can apply.'],
+['QA Automation Engineer','SwiftCart Commerce','Hyderabad · Hybrid','₹7–12 LPA','Write Selenium and API tests for a high-traffic e-commerce platform.'],
+['Android Developer','SwiftCart Commerce','Bengaluru · On-site','₹10–17 LPA','Kotlin, Jetpack and clean architecture. Experience shipping apps to Play Store.'],
+['Content Writer (Tech)','BrightPath Learning','Remote','₹4–7 LPA','Write clear tutorials and course notes on programming topics.'],
+['Full Stack Developer','BrightPath Learning','Noida · Hybrid','₹8–13 LPA','Java or Node.js back end with a modern front end. Own features end to end.'],
+['DevOps Engineer','CloudBridge Systems','Remote','₹12–20 LPA','Kubernetes, observability and incident response. On-call rotation included.'],
+['Machine Learning Engineer','Quantix Labs','Bengaluru · Hybrid','₹14–24 LPA','Train and deploy models. Python, PyTorch and MLOps basics.'],
+['Product Manager','NextWave Digital','Mumbai · Hybrid','₹18–28 LPA','Own roadmap and discovery for a B2B product. 3+ years of PM experience.'],
+['HR Executive','GreenGrid Energy','Delhi · On-site','₹3–5 LPA','Support hiring, onboarding and employee engagement.'],
+['Cybersecurity Analyst','CodeNest Technologies','Noida · Hybrid','₹9–15 LPA','Monitor alerts, run vulnerability scans and respond to incidents.'],
+['Frontend Developer (HTML/CSS/JS)','Pixel Forge Studio','Remote','₹5–9 LPA','Hand-craft responsive pages with clean HTML, CSS and JavaScript.'],
+['Business Analyst','DataLeaf Analytics','Gurugram · Hybrid','₹6–10 LPA','Gather requirements, build dashboards and present insights.'],
+['Technical Support Engineer','SwiftCart Commerce','Pune · On-site','₹4–6 LPA','Help customers and merchants resolve technical issues. Shifts apply.'],
+['Site Reliability Engineer','GreenGrid Energy','Bengaluru · Hybrid','₹15–25 LPA','Keep our platform fast and reliable. Strong Linux and scripting skills.'],
+['Campus Hiring Associate','BrightPath Learning','Lucknow · On-site','₹3–4.5 LPA','Visit colleges, run drives and coordinate with placement cells.']].forEach(j=>JOBS.push(j));
+const BASEJ=JOBS.length;
+const FEEDR={'Priya Sharma':'Software Engineer at Infosys','Rahul Verma':'Frontend Developer at Zoho','Aman Singh':'Backend Engineer at Paytm','Kavya Nair':'Data Analyst at Deloitte','Rohit Mehra':'DevOps Engineer at Wipro','Sana Khan':'Product Manager at Flipkart','Vikram Rao':'Java Developer at TCS','Neha Gupta':'UI Designer at Adobe','TechHire India':'Company · 84,210 followers'};
+const FEEDP=[
+['Priya Sharma',0,'Code review tip: review the tests first. If the tests do not explain the behaviour, the code will not either.',86,'1h'],
+['Ankit Joshi','Full Stack Developer at Capgemini','Day 30 of learning Spring Security. JWT is not hard, but getting refresh-token rotation right is. Writing it up as a blog post this weekend.',54,'3h',[{n:'Priya Sharma',t:'Rotation is the tricky part. Waiting for the post!'}]],
+['Meera Iyer','QA Engineer at Accenture','A bug report that says “it doesn’t work” costs the team an hour. Steps, expected result, actual result and a screenshot cost five minutes. Be kind to your developers.',132,'4h'],
+['Karan Malhotra','Cloud Architect at Microsoft','Cloud bills are an architecture problem, not a finance problem. Right-size first, then reserve, then optimise.',97,'6h'],
+['Kavya Nair',0,'Learned the hard way: always check for duplicate rows before you trust a dashboard. One bad join inflated our revenue by 12% for a week.',71,'7h'],
+['Aman Singh',0,'Idempotency keys saved us during a payment retry storm last night. If your API moves money, make every write safe to repeat.',143,'8h',[{n:'Rohit Mehra',t:'Same here, idempotency keys are underrated.'}]],
+['Sana Khan',0,'Roadmaps are promises. Backlogs are wishes. Be honest about which one you are showing your stakeholders.',210,'9h'],
+['Rohit Mehra',0,'Your CI pipeline should fail fast and fail loudly. A 40-minute pipeline that fails at minute 39 is a morale problem.',64,'10h'],
+['Neha Gupta',0,'Accessibility is not a feature you add at the end. Start with contrast, focus states and keyboard navigation in the very first wireframe.',118,'11h'],
+['Vikram Rao',0,'Mentoring freshers taught me this: nobody remembers the syntax they memorised, everyone remembers the bug they debugged at 2 a.m.',176,'12h'],
+['TechHire India',0,'Walk-in drive this Saturday in Noida for Java and testing roles. Bring your resume and one project you are proud of.',58,'13h'],
+['Ishita Bose','Data Scientist at Mu Sigma','Before you tune a model, plot your data. Half of my “model problems” turned out to be data problems.',89,'14h'],
+['Siddharth Jain','Android Developer at Swiggy','Shipped a 40% smaller APK today by removing unused libraries and compressing images. Boring work, big impact.',77,'15h'],
+['Pooja Reddy','HR Business Partner at Cognizant','Resume tip: lead with outcomes, not duties. “Reduced page load time by 35%” beats “Responsible for performance”.',164,'16h',[{n:'Nidhi Agarwal',t:'Completely agree. Numbers get noticed.'}]],
+['Arjun Nambiar','Cybersecurity Analyst at HCLTech','Turn on multi-factor authentication everywhere today. It is the cheapest security upgrade you will ever make.',92,'17h'],
+['Divya Menon','Technical Writer at Freshworks','Good documentation is a product. If a new teammate cannot run the project in 15 minutes, the README needs work.',108,'18h'],
+['Harsh Vardhan','Engineering Manager at Razorpay','The best engineers I have managed asked “why” three times before writing a single line of code.',189,'19h'],
+['Tanvi Kulkarni','ML Engineer at Fractal','Prompt engineering is mostly clear thinking written down. If you cannot explain the task to a colleague, a model will not get it either.',134,'20h'],
+['Mohit Saxena','Career Coach | Ex-Amazon','Rejected from 40 companies? You are not unlucky, you are in the data-collection phase. Change one thing per application and measure.',221,'21h'],
+['Nidhi Agarwal','Campus Recruiter at Tech Mahindra','Recruiters spend about seven seconds on a first scan. Clean formatting, clear headings and a one-line summary go a long way.',147,'22h'],
+['Rahul Verma',0,'CSS tip: use clamp() for fluid typography. One line replaces a pile of media queries.',101,'23h',[{n:'Neha Gupta',t:'clamp() is a lifesaver.'}]],
+['Priya Sharma',0,'Logs tell you what happened. Metrics tell you how often. Traces tell you where. You need all three.',83,'1d'],
+['Vikram Rao',0,'Records, sealed classes and pattern matching make everyday Java so much shorter. If you are still writing Java 8 style, give modern Java a weekend.',112,'1d'],
+['Aman Singh',0,'Premature microservices are the new premature optimisation. Start with a well-structured monolith.',158,'1d'],
+['Ankit Joshi','Full Stack Developer at Capgemini','Built my first full-stack project with Spring Boot, a REST API and a plain HTML front end. No front-end framework, and I learned so much more.',66,'1d'],
+['Kavya Nair',0,'SQL window functions changed how I write reports. ROW_NUMBER() and LAG() alone replaced pages of self-joins.',95,'1d',[{n:'Aman Singh',t:'LAG() is underrated. Nice tip!'}]],
+['Karan Malhotra','Cloud Architect at Microsoft','Design for failure. Every network call will eventually time out, so decide in advance what your app does when it does.',120,'1d'],
+['Sana Khan',0,'Talk to five customers before you write a spec. The fifth conversation is where the real problem shows up.',173,'1d'],
+['Meera Iyer','QA Engineer at Accenture','Automation does not replace testers. It frees us to explore the parts of the product that no script ever imagined.',81,'2d'],
+['Neha Gupta',0,'Design systems are 20% components and 80% agreements. Write down the agreements.',127,'2d'],
+['Rohit Mehra',0,'Docker tip: use multi-stage builds. My image went from 1.1 GB to 140 MB with ten extra lines.',138,'2d'],
+['Siddharth Jain','Android Developer at Swiggy','Kotlin coroutines finally clicked when I stopped thinking about threads and started thinking about suspension points.',59,'2d'],
+['Ishita Bose','Data Scientist at Mu Sigma','Reminder: a 95% accurate model on a 95% imbalanced dataset is just a model that always says no.',104,'2d'],
+['Pooja Reddy','HR Business Partner at Cognizant','Interview tip: it is okay to say “I do not know, but here is how I would find out.” Honest reasoning beats a confident guess.',196,'2d'],
+['Arjun Nambiar','Cybersecurity Analyst at HCLTech','Never reuse passwords. A password manager is not optional anymore, it is basic hygiene.',74,'2d'],
+['Harsh Vardhan','Engineering Manager at Razorpay','Ship small, ship often. A feature released in three small pieces teaches you more than one big launch.',142,'2d'],
+['Divya Menon','Technical Writer at Freshworks','API docs checklist: authentication, one working example per endpoint, error codes and rate limits. Everything else is a bonus.',67,'3d'],
+['Tanvi Kulkarni','ML Engineer at Fractal','Started the week with a messy notebook and ended it with a clean, tested pipeline. Refactoring is a superpower.',85,'3d'],
+['Mohit Saxena','Career Coach | Ex-Amazon','Your portfolio needs three projects at most. Pick the ones where you can explain every decision.',165,'3d'],
+['Nidhi Agarwal','Campus Recruiter at Tech Mahindra','Tip for final-year students: start your resume in the sixth semester, not the week of placements.',152,'3d'],
+['TechHire India',0,'Referral tip: a short note about why you fit the role gets more replies than a generic “please refer me”.',91,'3d'],
+['Rahul Verma',0,'Lighthouse score went from 52 to 96 after lazy-loading images and deferring one script. Measure first, then fix.',116,'3d'],
+['Priya Sharma',0,'Flaky tests are bugs in your test, your code or your environment. Never just re-run and move on.',99,'3d'],
+['Vikram Rao',0,'Think in collections: ArrayList by default, HashMap for lookups, and measure before you reach for anything fancier.',78,'4d'],
+['Aman Singh',0,'Database indexes are like a book index. Great for finding things, slow if you keep rewriting the book.',129,'4d'],
+['Kavya Nair',0,'Storytelling beats charts. Lead your dashboard with the one number that should change a decision.',106,'4d'],
+['Sana Khan',0,'Saying no to a feature is a product decision too. Write down what you are not building.',148,'4d'],
+['Neha Gupta',0,'User research does not need a lab. Five short calls and a shared notes doc are enough to start.',94,'4d'],
+['Rohit Mehra',0,'Infrastructure as code is only useful if someone can read it six months later. Name things clearly.',72,'5d'],
+['Ankit Joshi','Full Stack Developer at Capgemini','Open source tip: start with documentation fixes and small bug reports. Maintainers love them.',88,'5d'],
+['CodeNest Technologies','Company · 23,480 followers','We are hiring Java Backend Developers (1–3 yrs) in Noida. Apply from the Jobs tab.',64,'30m'],
+['CodeNest Technologies','Company · 23,480 followers','Our engineering team just crossed 1,000 automated tests in CI. Quality is a team sport. ✅',91,'2d'],
+['Pixel Forge Studio','Company · 8,215 followers','Our design team shipped a new design system this week. Huge thanks to everyone who made it happen. 🎨',77,'40m'],
+['Pixel Forge Studio','Company · 8,215 followers','Hiring: UI/UX Designer (remote). Share your portfolio and a short note on your process.',58,'3d'],
+['CloudBridge Systems','Company · 41,900 followers','Join our webinar on cost-efficient cloud architecture this Friday at 6 PM IST. Registration is open.',140,'1h'],
+['CloudBridge Systems','Company · 41,900 followers','We are looking for Cloud and DevOps engineers. Remote roles are open now.',102,'2d'],
+['DataLeaf Analytics','Company · 15,330 followers','Freshers welcome! Our Data Analyst trainee batch opens next month. SQL and Excel basics required.',188,'50m'],
+['DataLeaf Analytics','Company · 15,330 followers','Our analysts turned a 40-page report into a single dashboard this quarter. Less reading, better decisions.',69,'4d'],
+['NextWave Digital','Company · 29,760 followers','New blog: how we cut our page load time by 45% with image optimisation and code splitting.',113,'1h'],
+['NextWave Digital','Company · 29,760 followers','We are hiring React Developers and a Product Manager. Details are in the Jobs tab.',95,'3d'],
+['GreenGrid Energy','Company · 12,040 followers','Proud to announce our new solar monitoring dashboard. Cleaner energy, clearer data. 🌱',84,'2h'],
+['GreenGrid Energy','Company · 12,040 followers','Walk-in interviews for HR and Site Reliability roles this weekend. Carry your updated resume.',61,'3d'],
+['SwiftCart Commerce','Company · 56,120 followers','Big sale season means big traffic. Our engineers are ready, and we are hiring QA and Android talent.',157,'2h'],
+['SwiftCart Commerce','Company · 56,120 followers','Thank you to the 10,000 merchants who joined SwiftCart this year. We are just getting started! 🎉',230,'4d'],
+['BrightPath Learning','Company · 33,870 followers','New free course: HTML, CSS and JavaScript for beginners. Start learning today.',174,'3h'],
+['BrightPath Learning','Company · 33,870 followers','We are hiring writers, full-stack developers and campus associates. Check the Jobs tab.',72,'4d'],
+['Quantix Labs','Company · 9,470 followers','Applications are open for our summer internship programme. Final-year students, this one is for you.',146,'5h'],
+['Quantix Labs','Company · 9,470 followers','Our ML team published a short note on evaluating models with imbalanced data. Link in comments.',66,'5d'],
+['TechHire India',0,'Resume review week: send us your resume and get feedback from our recruiters. Details in the Jobs tab.',132,'45m'],
+['TechHire India',0,'Top skills employers asked us for this month: Java, SQL, React and cloud basics.',109,'2d']
+].map((x,i)=>({id:101+i,n:x[0],r:x[1]||FEEDR[x[0]],t:x[2],l:x[3],c:x[5]||[],liked:0,time:x[4]}));
+const pick20=a=>a[Math.floor(Math.random()*a.length)];
+const MSGT=['Hi! I saw your profile and wanted to connect.','Are you open to new opportunities?','Thanks for connecting!','Could you share your resume?','Congrats on your latest post!','Let’s catch up this week.','We have an opening that might suit you.','Can you recommend a good Java course?','Thanks for the endorsement!','Are you attending the networking event?'];
+function liveNote(){const p=pick20(PEOPLE)[0],j=pick20(JOBS);note(pick20([p+' viewed your profile.',p+' liked your post.',p+' commented on your post: “Great insights!”',p+' endorsed you for '+((D.skills&&D.skills[0])||'Java')+'.','New job: '+j[0]+' at '+j[1]+' matches your profile.',p+' shared your post.',j[1]+' posted a new update.',p+' mentioned you in a comment.',p+' wants to connect with you.']))}
+function liveMsg(){const p=pick20(PEOPLE)[0];let i=D.chats.findIndex(c=>c[0]==p);if(i<0){D.chats.push([p,[]]);i=D.chats.length-1}D.chats[i][1].push([pick20(MSGT),0,Date.now()]);if(!(D.tab=='msg'&&D.chat==i))D.unr[p]=(D.unr[p]||0)+1}
+function startLive(){if(window.__ls)return;window.__ls=setInterval(()=>{if(!D||!U||!G('lu_me')||$('.auth'))return;Math.random()<.65?liveNote():liveMsg();save();const a=document.activeElement;if(!a||!/INPUT|TEXTAREA/.test(a.tagName))app()},30000)}
+let SHOW=[];
+const seed=n=>({headline:'Student | Aspiring Professional',loc:'India',about:'',exp:[],edu:[],skills:[],unread:2,tab:'home',chat:0,jtab:'all',
+ conn:{},inv:['Sana Khan','Vikram Rao'],saved:{},applied:{},
+ notes:['Welcome to LinkSphere, '+n.split(' ')[0]+'! Complete your profile to get noticed.','Priya Sharma and 2 others viewed your profile.'],
+ chats:[['Priya Sharma',[['Welcome to LinkSphere! 👋',0]]],['Rahul Verma',[['Want to collaborate on a side project?',0]]]],
+ posts:[{id:1,n:'Priya Sharma',r:'Software Engineer at Infosys',t:'Just shipped our first Spring Boot microservice to production. Lesson learned: start with observability, not after the outage. 🚀',l:42,c:[{n:'Rahul Verma',t:'Congrats! Which tracing tool did you use?'}],liked:0,time:'2h'},
+ {id:2,n:'Rahul Verma',r:'Frontend Developer at Zoho',t:'Hot take: a single well-structured HTML file teaches you more about the web than three frameworks. Build things from scratch.',l:118,c:[],liked:0,time:'5h'},
+ {id:3,n:'TechHire India',r:'Company · 84,210 followers',t:'We are hiring Java Full Stack developers (0–2 yrs) in Noida and Bengaluru. Check the Jobs tab.',l:76,c:[],liked:0,time:'1d'}]});
+let U=null,D=null,mode='in',q='';
+const save=()=>{if(U)W('lu_d_'+U.email,D)};
+const note=t=>{D.notes.unshift(t);D.unread++};
+const SUG=[['Afzal Khan','Cloud DevOps Engineer | Linux | AWS | Docker | Kubernetes | Terraform | Ansible | Jenkins | CI/CD Pipelines','Shyam and 15 other mutual connections'],['akash upadhyay','B.Tech Student | Lead Generation | Inside Sales | Analytical Thinking | Team Collaboration | CRM','Shyam and 18 other mutual connections'],['Aman Pandey','Computer Vision Engineer || Intern @Ragh Vision Pvt. Ltd. || Student Ambassador @Csharp Corner.','triloki and 19 other mutual connections'],['Sanskar Gola','Attended IIMT Group of Colleges Greater Noida','Anurodh and 7 other mutual connections'],['Sundram Modanwal','Data Science & ML Aspirant | AI & ML Undergraduate | Python • NumPy • Pandas • ML Algorithms | C++ • DSA','triloki and 3 other mutual connections'],['Samar Gupta','Backend Developer (Python) | Django & Flask | API Development | PostgreSQL | JWT Auth | OOPs','Shyam and 7 other mutual connections'],['Gulam Raza','full stack developer','Rudra Pratap and 5 other mutual connections'],['Abhishek Sharma','Web Development Enthusiast | Skilled in React and Next.js | Pursuing CS Bachelor’s','Shyam and 13 other mutual connections']];
+const hl=n=>(PEOPLE.find(p=>p[0]==n)||SUG.find(p=>p[0]==n)||['',COMP.includes(n)?'Company':''])[1];
+const nm=n=>COMP.includes(n)?`<button class="nm" data-co="${esc(n)}">${esc(n)}</button>`:PX[n]?`<button class="nm" data-pf="${esc(n)}">${esc(n)}</button>`:`<b>${esc(n)}</b>`;
+const cnBtn=n=>D.conn[n]?`<button class="btn" data-cn="${esc(n)}">✓ Connected</button>`:D.pend[n]?`<button class="btn" data-cn="${esc(n)}">⏳ Pending</button>`:`<button class="btn fill" data-cn="${esc(n)}">+ Connect</button>`;
+const flBtn=n=>`<button class="btn ${D.fol[n]?'':'fill'}" data-fl="${esc(n)}">${D.fol[n]?'✓ Following':'+ Follow'}</button>`;
+function sched(n){setTimeout(()=>{if(!D||!D.pend||!D.pend[n])return;delete D.pend[n];D.conn[n]=1;note(n+' accepted your invitation.');save();const a=document.activeElement;if(!a||!/INPUT|TEXTAREA/.test(a.tagName))app()},7000)}
+function authView(err=''){document.body.classList.remove('mco');const su=mode=='up';
+$('#app').innerHTML=`<div class="auth"><div class="row" style="margin-bottom:20px"><span class="logo" style="font-size:28px">LS</span><div><b style="font-size:22px">LinkSphere</b> <span class="pill" style="font-size:11px;padding:0 8px;color:var(--mu)">v${VER}</span><div class="mu">A global sphere for professional networking</div></div></div>
+<div class="card" style="padding:24px"><h2 style="margin-bottom:4px">${su?'Join LinkSphere':'Sign in'}</h2><div class="mu" style="margin-bottom:12px">${su?'Make the most of your professional life':'Stay updated on your professional world'}</div>
+${su?'<input class="fi" id="a_n" placeholder="Full name">':''}<input class="fi" id="a_e" type="email" placeholder="Email">
+<input class="fi" id="a_p" type="password" placeholder="Password (6+ characters)"><div class="err" id="er">${err}</div>
+<button class="btn fill big" id="go">${su?'Agree & Join':'Sign in'}</button></div>
+<div style="text-align:center;margin-top:12px">${su?'Already on LinkSphere?':'New to LinkSphere?'} <button class="lnk" id="sw">${su?'Sign in':'Join now'}</button></div>
+<div class="mu" style="text-align:center;margin-top:16px">Accounts are saved only in this browser.</div></div>`}
+function doAuth(){const e=$('#a_e').value.trim().toLowerCase(),p=$('#a_p').value,users=G('lu_users')||{};
+ if(!/^\S+@\S+\.\S+$/.test(e))return authView('Enter a valid email.');
+ if(p.length<6)return authView('Password must be 6+ characters.');
+ if(mode=='up'){const n=$('#a_n').value.trim();if(!n)return authView('Enter your name.');if(users[e])return authView('An account with this email already exists.');
+  users[e]={name:n,pw:p};W('lu_users',users);W('lu_d_'+e,seed(n))}
+ else if(!users[e]||users[e].pw!==p)return authView('Wrong email or password.');
+ W('lu_me',e);boot()}
+function boot(){const e=G('lu_me'),users=G('lu_users')||{};if(!e||!users[e])return authView();U={email:e,name:users[e].name};D=G('lu_d_'+e)||seed(U.name);
+ D.sp=D.sp||{};D.gr=D.gr||{};D.nl=D.nl||{};D.ev=D.ev||{};D.myjobs=D.myjobs||[];D.cert=D.cert||[];D.proj=D.proj||[];D.lang=D.lang||[];D.vol=D.vol||[];D.rec=D.rec||[];D.feat=D.feat||[];D.nf=D.nf||'all';D.vis=D.vis||'Anyone';D.unr=D.unr||{'Priya Sharma':1,'Rahul Verma':1};
+ D.pend=D.pend||{};D.ht=D.ht||{};D.mf=D.mf||'all';D.star=D.star||{};migrate();D.fol=D.fol||{};D.games=D.games||{};D.cu=D.cu||{};D.csort=D.csort||'recent';D.fft=D.fft||'fing';D.invt=D.invt||'rec';D.cuf=D.cuf||'all';D.en=D.en||{};D.vote=D.vote||{};D.hid=D.hid||{};D.alerts=D.alerts||[];D.sort=D.sort||'top';D.jw=D.jw||'all';D.ntab=D.ntab||'grow';
+ D.ot=D.ot||{vis:'Recruiters only',titles:'',types:'On-site · Hybrid',start:'Immediately'};
+ if(!D.v12){D.v12=1;D.posts.splice(1,0,JSON.parse(JSON.stringify(POLLPOST)))}
+ FEEDP.forEach(f=>{if(!D.posts.some(p=>p.id==f.id))D.posts.push(JSON.parse(JSON.stringify(f)))});
+ if(!D.v20){D.v20=1;D.notes.unshift('New job: Java Backend Developer at CodeNest Technologies matches your profile.','Neha Gupta liked your post.','CloudBridge Systems posted a new update.','Aman Singh viewed your profile.','Kavya Nair commented on your post: “Well said!”','Your post reached 240 impressions this week.','New job: Frontend Developer (HTML/CSS/JS) at Pixel Forge Studio matches your profile.','Rohit Mehra endorsed you for Java.','Sana Khan wants to connect with you.','DataLeaf Analytics posted a new update.','Your job application was viewed by BrightPath Learning.','Vikram Rao mentioned you in a comment.','Priya Sharma shared your post.','5 new jobs match your alerts.');D.unread+=8;
+  [['Neha Gupta','Loved your recent post! Could we collaborate on a design project?'],['Aman Singh','Hi! Do you know any good resources for system design?'],['Kavya Nair','Thanks for connecting. Are you hiring for data roles?'],['Sana Khan','Hello! We have a product role that may suit you.'],['Vikram Rao','Happy to mentor you on Java. Let me know a good time.'],['Rohit Mehra','Saw your project. The UI looks great!']].forEach((m,i)=>{if(!D.chats.some(c=>c[0]==m[0])){D.chats.push([m[0],[[m[1],0,Date.now()-(i+1)*36e5]]]);D.unr[m[0]]=1}})}
+ GR.length=BG;EV.length=BE;NL.length=BN;if(D.mk)['gr','ev','nl'].forEach(k=>(D.mk[k]||[]).forEach(x=>({gr:GR,ev:EV,nl:NL})[k].push(x)));
+ startLive();
+ {const ids=D.posts.filter(p=>!p.mine).map(p=>p.id);for(let i=ids.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ids[i],ids[j]]=[ids[j],ids[i]]}SHOW=ids.slice(0,8)}
+ JOBS.length=BASEJ;D.myjobs.forEach(j=>JOBS.push(j));Object.keys(D.pend).forEach(n=>{if(D.pend[n])sched(n)});app()}
+const IC={search:'<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>',
+home:'<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>',
+net:'<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>',
+jobs:'<svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>',
+msg:'<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>',
+bell:'<svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>',
+add:'<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>',
+grid:'<svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>'};
+const meMenu=()=>`<div class="hdm"><div class="row" style="align-items:flex-start">${av(U.name,5)}<div style="flex:1;min-width:0"><b>${esc(U.name)}</b><div class="mu">${esc(D.headline)}</div></div></div><button class="btn big" style="margin:10px 0;font-size:14px;padding:6px" data-t="me">View profile</button><div class="mu" style="font-weight:600">Account</div><button data-th>◐ Light / dark mode</button><button data-v="saved">🔖 Saved items</button><button data-v="dev">👨‍💻 About Developer</button><button data-v="resumeV">📄 Resume Builder</button><button data-v="skillT">🏅 Skill assessments</button><button data-v="salaryV">💰 Salary insights</button><button data-v="sett">⚙️ Settings &amp; Privacy</button><button data-fk="Help Center">❓ Help Center</button><div class="mu" style="font-weight:600;margin-top:6px">Manage</div><button data-t="me">📝 Posts &amp; activity</button><button data-t="jobs">💼 Job posting &amp; alerts</button><button data-lo>↪ Sign out</button></div>`;
+const bizMenu=()=>`<div class="hdm" style="width:300px"><div class="mu" style="font-weight:600;margin-bottom:6px">For Business</div><div class="bgrid">${[['💼','Post a job','data-t="jobs"'],['👥','Groups','data-v="groups"'],['📅','Events','data-v="events"'],['📰','Newsletters','data-v="news"'],['🏢','Pages','data-mg="pages"'],['⭐','Premium','data-prem'],['🎓','Learning','data-v="learn"'],['🏅','Skill tests','data-v="skillT"'],['💰','Salary','data-v="salaryV"'],['📄','Resume','data-v="resumeV"'],['👨‍💻','About Developer','data-v="dev"']].map(x=>`<button ${x[2]}><span style="font-size:22px">${x[0]}</span><span>${x[1]}</span></button>`).join('')}</div></div>`;
+const T=[['home','🏠','Home'],['net','👥','My Network'],['jobs','💼','Jobs'],['msg','💬','Messaging'],['bell','🔔','Notifications'],['me','👤','Me']];
+function app(){const inv=D.inv.length;
+$('#app').innerHTML=`<nav><button class="mo mav" data-dr aria-label="Menu">${av(U.name,5)}</button><span class="logo" title="LinkSphere">LS</span><div class="sbox">${IC.search}<input id="q" placeholder="Search" value="${esc(q)}"></div><div class="tabs">${T.filter(t=>t[0]!='me').map(t=>`<button class="tab ${(D.tab==t[0]||(t[0]=='net'&&NETT.includes(D.tab)))?'on':''}" data-t="${t[0]}">${IC[t[0]]}<span>${t[2]}</span>${t[0]=='bell'&&D.unread?`<span class="bdg">${D.unread}</span>`:''}${t[0]=='net'&&inv?`<span class="bdg">${inv}</span>`:''}${t[0]=='msg'&&unrN()?`<span class="bdg">${unrN()}</span>`:''}</button>`).join('')}<span class="vsep"></span><div class="hw"><button class="tab ${D.tab=='me'?'on':''}" data-mn="hme">${av(U.name,5)}<span>Me ▾</span></button>${MENU=='hme'?meMenu():''}</div><span class="vsep"></span><div class="hw"><button class="tab" data-mn="hbiz">${IC.grid}<span>For Business ▾</span></button>${MENU=='hbiz'?bizMenu():''}</div></div><button class="mo mmsg" data-t="msg" aria-label="Messaging">${IC.msg}${unrN()?`<span class="bdg" style="top:-2px;right:-4px">${unrN()}</span>`:''}</button></nav>
+<main class="${D.tab=='msg'?'wide':''}"><aside>${NETT.includes(D.tab)?mgr():`<div class="card prof"><div class="cover" style="${cvr()}"></div><div class="in">${av(U.name,5)}<b>${esc(U.name)}</b><div class="mu">${esc(D.headline)}</div><div class="mu" style="margin-top:8px">Connections <b style="color:var(--pr)">${Object.values(D.conn).filter(Boolean).length+312}</b></div></div></div><div class="card">${side('viewers','Profile viewers',6)}${side('imp','Post impressions',imps())}</div><div class="card">${side('saved','🔖 Saved items')}${side('groups','👥 Groups')}${side('news','📰 Newsletters')}${side('events','📅 Events')}${side('dev','👨‍💻 About Developer')}</div>`}</aside>
+<section id="view"></section><aside><div class="card"><b>LinkSphere News</b><div class="item">Java 25 adoption rises<div class="mu">12,430 readers</div></div><div class="item">Hiring picks up for full-stack roles<div class="mu">8,201 readers</div></div><div class="item">AI pair-programming goes mainstream<div class="mu">5,960 readers</div></div></div><div class="card"><b>Trending topics</b><div style="margin-top:6px">${['java','hiring','frontend','spring','ai','careers','opensource'].map(t=>`<div class="row" style="padding:5px 0"><button class="lnk" data-tg="${t}" style="flex:1;text-align:left">#${t}</button><button class="btn" style="padding:1px 10px;font-size:12px" data-fht="${t}">${D.ht[t]?'✓ Following':'+ Follow'}</button></div>`).join('')}</div></div><div class="card"><b>Add to your feed</b>${PEOPLE.slice(0,3).map(p=>`<div class="item row">${av(p[0])}<div style="flex:1;min-width:0">${nm(p[0])}<div class="mu">${esc(p[1])}</div></div>${flBtn(p[0])}</div>`).join('')}</div></aside></main><div class="mbar">${[['home','Home'],['net','My Network'],['cp','Post'],['bell','Notifications'],['jobs','Jobs']].map(t=>`<button class="${(D.tab==t[0]||(t[0]=='net'&&NETT.includes(D.tab)))?'on':''}" ${t[0]=='cp'?'data-cp':'data-t="'+t[0]+'"'}>${IC[t[0]=='cp'?'add':t[0]]}${t[1]}${t[0]=='bell'&&D.unread?`<span class="bdg">${D.unread}</span>`:''}${t[0]=='net'&&inv?`<span class="bdg">${inv}</span>`:''}</button>`).join('')}</div>${DR?drawer():''}${FM?fmodal():''}${SM?smodal():''}`;view()}
+function view(){const t=D.tab;$('#view').innerHTML=({home,net,jobs,msg,bell,me,pf,viewers,imp,saved:savedV,groups,news,events,srch:srchV,co:coV,dev,prem,learn,sett,info,skillT,resumeV,salaryV})[t]();const m=$('#ms');if(m)m.scrollTop=1e5;document.body.classList.toggle('mco',D.tab=='msg'&&!!CO);if(MFOC){MFOC=0;const mi=$('#mi');if(mi)mi.focus()}if(FOCI){const el=document.querySelector('[data-ci="'+FOCI+'"]');if(el)el.focus();FOCI=null}}
+const pollH=p=>{if(!p.poll)return '';const v=D.vote[p.id],tot=p.poll.reduce((a,o)=>a+o[1],0),pc=o=>Math.round(o[1]/(tot||1)*100);
+ return '<div style="margin-top:8px">'+p.poll.map((o,i)=>v==null?`<button class="btn" style="display:block;width:100%;margin-bottom:6px;text-align:left" data-vote="${p.id}:${i}">${esc(o[0])}</button>`:`<div style="position:relative;border:1px solid var(--bd);border-radius:6px;margin-bottom:6px;padding:6px 10px;overflow:hidden"><div style="position:absolute;top:0;bottom:0;left:0;width:${pc(o)}%;background:var(--hv)"></div><div class="row" style="position:relative"><span style="flex:1">${esc(o[0])}${v==i?' ✓':''}</span><b>${pc(o)}%</b></div></div>`).join('')+`<div class="mu">${tot} votes${v==null?'':' · <button class="lnk" data-uv="'+p.id+'">Remove vote</button>'}</div></div>`};
+const EX={},OC={},LM={},CD={},RO={},SMS={};let SM=null,FOCI=null;
+const CTX={2:'Neha Gupta likes this',3:'Aman Singh celebrates this',104:'Rahul Verma likes this',110:'Sana Khan celebrates this',121:'Aman Singh likes this',133:'Neha Gupta celebrates this',140:'Vikram Rao likes this',147:'Priya Sharma likes this'};
+const SVF=p=>`<svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${p}</svg>`;
+const ICN={like:SVF('<path d="M19.46 11l-3.91-3.91a7 7 0 01-1.69-2.74l-.49-1.47A2.76 2.76 0 0010.76 1 2.75 2.75 0 008 3.74v1.12a9.19 9.19 0 00.46 2.85L8.89 9H4.12A2.12 2.12 0 002 11.12a2.16 2.16 0 00.92 1.76A2.11 2.11 0 002 14.62a2.14 2.14 0 001.28 2 2 2 0 00-.28 1 2.12 2.12 0 002 2.12v.14A2.12 2.12 0 007.12 22h7.49a8.08 8.08 0 003.58-.84l.31-.16H21V11zM19 19h-1l-.73.37a6.14 6.14 0 01-2.69.63H7.72a1 1 0 01-1-.72.51.51 0 01.28-.58 1 1 0 00.62-1 1 1 0 00-.64-.94 1 1 0 01-.6-1 1 1 0 01.46-1 1 1 0 00.43-.87 1 1 0 00-.55-.93 1 1 0 010-1.76 1 1 0 01.55-.17h6.41l-1.62-3.24A7.07 7.07 0 0110 4.86V3.75a.77.77 0 01.75-.75.75.75 0 01.71.51L12 5a9 9 0 002.13 3.5l4.5 4.5H19z"/>'),likeF:SVF('<path d="M19.46 11l-3.91-3.91a7 7 0 01-1.69-2.74l-.49-1.47A2.76 2.76 0 0010.76 1 2.75 2.75 0 008 3.74v1.12a9.19 9.19 0 00.46 2.85L8.89 9H4.12A2.12 2.12 0 002 11.12a2.16 2.16 0 00.92 1.76A2.11 2.11 0 002 14.62a2.14 2.14 0 001.28 2 2 2 0 00-.28 1 2.12 2.12 0 002 2.12v.14A2.12 2.12 0 007.12 22h7.49a8.08 8.08 0 003.58-.84l.31-.16H21V11z"/>'),cm:SVF('<path d="M7 9h10v1H7zm0 4h7v-1H7zm16-2a6.78 6.78 0 01-2.84 5.61L12 22v-4H8A7 7 0 018 4h8a7 7 0 017 7zm-2 0a5 5 0 00-5-5H8a5 5 0 000 10h6v2.28L19 15a4.79 4.79 0 002-4z"/>'),rp:SVF('<path d="M13.96 5H6c-.55 0-1 .45-1 1v10H3V6c0-1.66 1.34-3 3-3h7.96L12 0h2.37L17 4l-2.63 4H12l1.96-3zm5.54 3H19v10c0 .55-.45 1-1 1h-7.96L12 16h-2.37L7 20l2.63 4H12l-1.96-3H18c1.66 0 3-1.34 3-3V8h-1.5z"/>'),send:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M21 3L1.5 9.6l6.7 3.9L14 22.5z"/><path d="M8.2 13.5L21 3"/></svg>'};
+const deg=n=>D.conn[n]?' <span class="mu">• 1st</span>':(PEOPLE.some(p=>p[0]==n)?' <span class="mu">• 2nd</span>':'');
+const pmenu=p=>p.mine?`<div class="mnu" style="left:auto;right:0"><button data-ep="${p.id}">✏️ Edit post</button><button data-bk="${p.id}">🔖 ${D.sp[p.id]?'Unsave':'Save'}</button><button data-cpl="${p.id}">🔗 Copy link to post</button><button data-del="${p.id}">🗑 Delete post</button></div>`:`<div class="mnu" style="left:auto;right:0"><button data-bk="${p.id}">🔖 ${D.sp[p.id]?'Unsave':'Save'}</button><button data-cpl="${p.id}">🔗 Copy link to post</button><button data-fl="${esc(p.n)}">${D.fol[p.n]?'➖ Unfollow':'➕ Follow'} ${esc(p.n)}</button><button data-hide="${p.id}">🙈 Not interested</button><button data-rpt="${p.id}">🚩 Report post</button></div>`;
+const plural=(n,w)=>n+' '+w+(n==1?'':'s');
+const rxRow=p=>{if(!p.l&&!p.c.length&&!p.rpc)return '';const ics=['👍'].concat(p.liked>1?[R[p.liked-1][0]]:[],p.l>60?['💡']:[]);
+return `<div class="rxs">${p.l?`<span class="rxi">${ics.map(e=>`<span>${e}</span>`).join('')}</span><span class="mu">${p.liked?(p.l>1?'You and '+(p.l-1)+' other'+(p.l-1==1?'':'s'):'You'):p.l}</span>`:''}<span style="flex:1"></span>${p.c.length?`<button class="lnk mu" data-cm="${p.id}" style="font-weight:400">${plural(p.c.length,'comment')}</button>`:''}${p.rpc?`<span class="mu">${p.c.length?'• ':''}${plural(p.rpc,'repost')}</span>`:''}</div>`};
+const actBar=p=>`<div class="act"><div class="rw"><div class="rp${RM==p.id?' o':''}">${R.map((r,k)=>`<button data-react="${p.id}:${k}" title="${r[1]}">${r[0]}</button>`).join('')}</div><button class="${p.liked?'liked':''}" data-like="${p.id}">${p.liked>1?`<span style="font-size:20px;line-height:22px">${R[p.liked-1][0]}</span>`:(p.liked?ICN.likeF:ICN.like)}<span>${p.liked?R[p.liked-1][1]:'Like'}</span></button><button class="rpk" data-rpk="${p.id}" aria-label="Choose reaction">▾</button></div><button data-cm="${p.id}">${ICN.cm}<span>Comment</span></button><div class="mnw"><button data-mn="rp${p.id}">${ICN.rp}<span>Repost</span></button>${MENU=='rp'+p.id?`<div class="mnu"><button data-rpq="${p.id}"><span>🔁 <b>Repost</b><br><small>Instantly bring this post to your network</small></span></button><button data-rp="${p.id}"><span>✏️ <b>Repost with your thoughts</b><br><small>Add your own post on top</small></span></button></div>`:''}</div><div class="mnw"><button data-mn="sn${p.id}">${ICN.send}<span>Send</span></button>${MENU=='sn'+p.id?`<div class="mnu"><button data-sm="${p.id}">💬 Send in a private message</button><button data-cpl="${p.id}">🔗 Copy link to post</button></div>`:''}</div></div>`;
+const cmBox=(k,ph)=>`<div class="cmr row" style="align-items:flex-start;margin-top:10px">${av(U.name,5)}<div class="cin" style="flex:1"><input class="fi2" data-ci="${k}" placeholder="${esc(ph)}" value="${esc(CD[k]||'')}"><button class="btn fill" data-cpost="${k}" ${(CD[k]||'').trim()?'':'disabled'}>Post</button></div></div>`;
+const cmItem=(p,c,ci)=>{const k=p.id+':'+ci;return `<div class="cmr row" style="align-items:flex-start;margin-top:10px">${av(c.n,ci+1)}<div style="flex:1;min-width:0"><div class="cbub"><div class="row" style="gap:6px;align-items:baseline"><span>${nm(c.n)}</span><span class="mu" style="margin-left:auto">${esc(c.time||'')}</span></div><div class="mu">${esc(c.n==U.name?D.headline:hl(c.n))}</div><div style="margin-top:4px;white-space:pre-wrap;word-break:break-word">${esc(c.t)}</div></div><div class="mu" style="margin:2px 0 0 6px"><button class="lnk" data-cl="${k}" style="font-size:12px;font-weight:600;${c.lk?'color:var(--pr)':'color:var(--mu)'}">Like</button>${c.l?' · 👍 '+c.l:''} · <button class="lnk" data-cr="${k}" style="font-size:12px;font-weight:600;color:var(--mu)">Reply</button>${(c.r||[]).length?' · '+plural(c.r.length,'reply').replace('replys','replies'):''}${c.n==U.name?' · <button class="lnk" data-cx="'+k+'" style="font-size:12px;color:var(--mu)">Delete</button>':''}</div>${(c.r||[]).map(r=>`<div class="cmr row" style="align-items:flex-start;margin-top:8px">${av(r.n)}<div class="cbub" style="flex:1;min-width:0"><div class="row" style="gap:6px;align-items:baseline"><span>${nm(r.n)}</span><span class="mu" style="margin-left:auto">${esc(r.time||'')}</span></div><div style="margin-top:4px;white-space:pre-wrap;word-break:break-word">${esc(r.t)}</div></div></div>`).join('')}${RO[k]?cmBox(k,'Reply to '+c.n+'…'):''}</div></div>`};
+const cmSect=p=>{if(!OC[p.id]&&!p.c.length)return '';const all=p.c,show=LM[p.id]?all:all.slice(0,2);return (OC[p.id]?cmBox(String(p.id),'Add a comment…'):'')+show.map((c,ci)=>cmItem(p,c,ci)).join('')+(all.length>show.length?`<button class="lnk" data-lm="${p.id}" style="margin:8px 0 0;color:var(--mu);font-weight:600">Load more comments</button>`:'')};
+const repCard=r=>`<div class="repc"><div class="row">${av(r.n,r.n.length)}<div style="flex:1;min-width:0">${nm(r.n)}<div class="mu">${esc(r.r||'')}</div></div></div><p style="margin:8px 0 0;white-space:pre-wrap">${tag(r.t||'')}</p>${r.img?`<img class="pim" src="${r.img}" alt="Post image">`:''}</div>`;
+const postCard=p=>{if(D.hid[p.id])return `<div class="card mu">Post hidden. <button class="lnk" data-hide="${p.id}">Undo</button></div>`;
+const t=p.t||'',long=t.length>220&&!EX[p.id],fb=!p.mine&&!D.fol[p.n]&&!D.conn[p.n]?`<button class="lnk" data-fl="${esc(p.n)}" style="font-weight:600;white-space:nowrap">+ Follow</button>`:'';
+return `<div class="card post">${CTX[p.id]?`<div class="ctx">${esc(CTX[p.id])}</div>`:''}<div class="row" style="align-items:flex-start">${av(p.n,p.id)}<div style="flex:1;min-width:0">${nm(p.n)}${p.mine?'':deg(p.n)}<div class="mu">${esc(p.r)}</div><div class="mu">${esc(p.time)} • ${p.vis=='Connections only'?'👥':'🌐'}</div></div>${fb}<span class="mnw"><button class="lnk pmb" data-mn="pm${p.id}" aria-label="More options">⋯</button>${MENU=='pm'+p.id?pmenu(p):''}</span>${p.mine?'':`<button class="lnk pmb" data-hide="${p.id}" aria-label="Hide post" title="Hide post">✕</button>`}</div>${t?`<p>${tag(long?t.slice(0,220):t)}${long?`… <button class="more" data-ex="${p.id}">more</button>`:''}</p>`:''}${p.rep?repCard(p.rep):''}${p.img?`<img class="pim" src="${p.img}" alt="Post image">`:''}${pollH(p)}${rxRow(p)}${actBar(p)}${cmSect(p)}</div>`};
+function postC(k){const v=(CD[k]||'').trim();if(!v)return;const o={n:U.name,t:v,time:'now'};if(String(k).includes(':')){const a=k.split(':'),c=D.posts.find(x=>x.id==a[0]).c[+a[1]];(c.r=c.r||[]).push(o);RO[k]=0}else D.posts.find(x=>x.id==k).c.push(o);CD[k]='';save();app()}
+const smodal=()=>{const p=D.posts.find(x=>x.id==SM);if(!p)return '';const names=[...new Set(D.chats.map(c=>c[0]).concat(Object.keys(D.conn).filter(k=>D.conn[k])))];
+return `<button class="bk" data-sx aria-label="Close"></button><div class="cmod" role="dialog" aria-label="Send post"><div class="row"><b style="flex:1;font-size:18px">Send post</b><button class="lnk" data-sx style="font-size:20px" aria-label="Close">✕</button></div><div class="mu" style="margin:6px 0 8px">“${esc((p.t||'').slice(0,90))}${(p.t||'').length>90?'…':''}” · ${esc(p.n)}</div>`+(names.map(n=>`<div class="item row">${av(n)}<div style="flex:1;min-width:0">${nm(n)}<div class="mu">${esc(hl(n))}</div></div>${SMS[p.id+'|'+n]?'<span class="mu">✓ Sent</span>':`<button class="btn" data-ssend="${esc(n)}">Send</button>`}</div>`).join('')||'<div class="mu">No conversations yet.</div>')+'</div>'};
+function home(){const ps=D.posts.filter(p=>q?(p.t+p.n).toLowerCase().includes(q.toLowerCase()):(p.mine||SHOW.includes(p.id)));if(D.sort=='top')ps.sort((a,b)=>(b.l+b.c.length*3)-(a.l+a.c.length*3));
+const pp=q?PEOPLE.filter(p=>p.join(' ').toLowerCase().includes(q.toLowerCase())):[];
+return `<div class="card"><div class="row">${av(U.name,5)}<button class="fi" data-cp style="text-align:left;color:var(--mu);border-radius:30px;font-weight:600">Start a post</button></div><div class="row" style="justify-content:space-around;margin-top:8px;gap:0">${[['data-cp','🖼','#378fe9','Photo'],['data-pl','📊','#e7a33e','Poll'],['data-art','📝','#e06847','Write article']].map(a=>`<button class="qa" ${a[0]}><span style="color:${a[2]}">${a[1]}</span> ${a[3]}</button>`).join('')}</div></div>${CM?composer():''}`
++`<div class="row" style="margin:0 0 8px"><div style="flex:1;border-top:1px solid var(--bd)"></div><span class="mu">Sort by:</span><span class="mnw"><button class="lnk" data-mn="sort" style="color:var(--tx);font-weight:600">${D.sort=='top'?'Top':'Recent'} ▾</button>${MENU=='sort'?`<div class="mnu" style="left:auto;right:0;min-width:140px"><button data-so="top">Top</button><button data-so="recent">Recent</button></div>`:''}</span></div>`
++(pp.length?`<div class="card"><b>People</b>`+pp.map(p=>`<div class="item row">${av(p[0])}<div style="flex:1">${nm(p[0])}<div class="mu">${p[1]}</div></div>${cnBtn(p[0])}</div>`).join('')+'</div>':'')
++(ps.map(postCard).join('')||'<div class="card mu">No posts found.</div>')}
+let CQ='',CS='',DR=0,CM=0,CO=0,MD='',EMO=0,MFOC=0,TY=null;
+const unrN=()=>Object.values(D.unr||{}).reduce((a,b)=>a+b,0);
+const wide=()=>matchMedia('(min-width:701px)').matches;
+const tmL=t=>t?new Date(t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'';
+const dayL=t=>{if(!t)return 'Earlier';const d=new Date(t),n=new Date();if(d.toDateString()==n.toDateString())return 'Today';if(d.toDateString()==new Date(n-864e5).toDateString())return 'Yesterday';return d.toLocaleDateString([],{month:'short',day:'numeric'})};
+const lstT=t=>{if(!t)return 'Earlier';const d=new Date(t);return d.toDateString()==new Date().toDateString()?tmL(t):d.toLocaleDateString([],{month:'short',day:'numeric'})};
+const chatList=()=>{const f=D.mf;return D.chats.map((x,i)=>[x,i]).filter(([x])=>(!CS||x[0].toLowerCase().includes(CS.toLowerCase()))&&(f=='all'||(f=='unread'&&D.unr[x[0]])||(f=='conn'&&D.conn[x[0]])||(f=='star'&&D.star[x[0]]))).map(([x,i])=>{const m=x[1][x[1].length-1],u=D.unr[x[0]];return `<button class="ci ${i==D.chat?'on':''}" data-ch="${i}">${av(x[0],i+1)}<span class="cbd"><span class="ct"><b class="${u?'':'rd'}">${esc(x[0])}${D.star[x[0]]?' ★':''}</b><span class="mu">${m?lstT(m[2]):''}</span></span><span class="mu cs ${u?'ub':''}">${m?(m[1]?'You: ':'')+esc(m[0]):'No messages yet'}</span></span>${u?`<span class="bdg" style="position:static;align-self:center">${u}</span>`:''}</button>`}).join('')||'<div class="mu" style="padding:16px;text-align:center">No conversations found.</div>'};
+const ncat=n=>/job|application/i.test(n)?'jobs':/liked|reacted|comment|reply|post/i.test(n)?'posts':'net';
+const drawer=()=>`<button class="bk" data-drx aria-label="Close menu"></button><div class="dr"><div style="padding:16px;border-bottom:1px solid var(--bd)">${av(U.name,5)}<div style="margin-top:8px"><b>${esc(U.name)}</b></div><div class="mu">${esc(D.headline)}</div><button class="lnk" data-t="me" style="padding:6px 0">View profile</button><div class="mu"><b style="color:var(--pr)">${cnt(D.conn)+312}</b> connections</div></div><div style="padding:8px 16px">${[['🔖','Saved items','data-v="saved"'],['👥','Groups','data-v="groups"'],['📰','Newsletters','data-v="news"'],['📅','Events','data-v="events"'],['🏢','Pages','data-mg="pages"'],['👨‍💻','About Developer','data-v="dev"'],['📄','Resume Builder','data-v="resumeV"'],['🏅','Skill assessments','data-v="skillT"'],['💰','Salary insights','data-v="salaryV"'],['⚙️','Settings & Privacy','data-v="sett"'],['👁','Profile viewers','data-v="viewers"'],['📊','Post impressions','data-v="imp"'],['◐','Light / dark mode','data-th'],['↪','Sign out','data-lo']].map(x=>`<button class="dri" ${x[2]}><span>${x[0]}</span> ${x[1]}</button>`).join('')}</div></div>`;
+const composer=()=>`<button class="bk" data-cmx aria-label="Close"></button><div class="cmod"><div class="row" style="margin-bottom:8px">${av(U.name,5)}<div style="flex:1"><b>${esc(U.name)}</b><div><button class="btn" data-vis style="padding:1px 10px;font-size:12px">${D.vis=='Connections only'?'👥 Connections only':'🌐 Anyone'} ▾</button></div></div><button class="lnk" data-cmx style="font-size:20px" aria-label="Close">✕</button></div><textarea id="np" rows="6" placeholder="What do you want to talk about?" style="border:0;padding:6px 0">${esc(PTXT)}</textarea>${PIMG?`<div class="cw"><img class="pim" src="${PIMG}" alt="Attached"><button class="cam" data-pir title="Remove image" aria-label="Remove image">✕</button></div>`:''}<input type="file" accept="image/*" id="f_post" hidden><div class="row" style="justify-content:flex-end;margin-top:8px;flex-wrap:wrap"><button class="btn" data-pi>📷 Photo</button><button class="btn" data-pl>📊 Poll</button><button class="btn fill" id="pb">Post</button></div></div>`;
+const NETT=['net','groups','news','events'];
+const GAMES=[['Zip #590',13,'🧩'],['Wend #142',6,'🌀'],['Patches #225',6,'🟦'],['Mini Sudoku #443',3,'🔢'],['Tango #751',3,'☀️'],['Queens #911',2,'👑'],['Crossclimb #911',2,'🪜'],['Pinpoint #911',4,'📍']];
+const CUT=[['🎂','Birthday today','birthday','Say happy birthday','Happy birthday! 🎂 Hope you have a great day.'],['🎉','Work anniversary · 2 years','anniv','Congratulate','Congratulations on your work anniversary! 🎉'],['💼','Started a new position','job','Congratulate','Congrats on the new role! 💼 Wishing you all the best.'],['🎓','Earned a new certification','cert','Congratulate','Congratulations on the new certification! 🎓']];
+const cuList=()=>Object.keys(D.conn).filter(k=>D.conn[k]).map((n,i)=>[n,CUT[(n.length+i)%4]]);
+const cnt=o=>Object.values(o).filter(Boolean).length;
+const mrow=(l,n,attr,on)=>`<button class="${on?'on':''}" ${attr}><span>${l}</span>${n!=null?`<span>${n}</span>`:''}</button>`;
+const mgr=()=>{const nt=D.tab=='net'?D.ntab:'';
+return `<div class="card mg"><b>Manage my network</b>${mrow('Connections',cnt(D.conn)+312,'data-mg="conn"',nt=='conn')}${mrow('Following & followers',null,'data-mg="ff"',nt=='ff')}${mrow('Groups',cnt(D.gr),'data-v="groups"',D.tab=='groups')}${mrow('Events',cnt(D.ev),'data-v="events"',D.tab=='events')}${mrow('Pages',COMP.filter(c=>D.fol[c]).length,'data-mg="pages"',nt=='pages')}${mrow('Newsletters',cnt(D.nl),'data-v="news"',D.tab=='news')}</div><div class="card" style="padding:4px"><div class="fl">${['About','About Developer','Accessibility','Help Center','Privacy & Terms','Ad Choices','Advertising','Business Services','Get the LinkSphere app','More'].map(x=>`<button ${x=='More'?'data-mg="grow"':x=='About Developer'?'data-v="dev"':'data-fk="'+x+'"'}>${x}</button>`).join('')}</div><div class="mu" style="text-align:center;padding-bottom:6px">LinkSphere Corporation © 2026</div></div>`};
+const mgm=()=>`<div class="card mgm"><b>Manage my network</b><div class="pills">${[['Connections','data-mg="conn"'],['Following & followers','data-mg="ff"'],['Groups','data-v="groups"'],['Events','data-v="events"'],['Pages','data-mg="pages"'],['Newsletters','data-v="news"']].map(x=>`<button class="btn" ${x[1]}>${x[0]}</button>`).join('')}</div></div>`;
+const connList=()=>{let a=Object.keys(D.conn).filter(k=>D.conn[k]).reverse();if(D.csort=='first')a.sort((x,y)=>x.localeCompare(y));if(D.csort=='last')a.sort((x,y)=>x.split(' ').pop().localeCompare(y.split(' ').pop()));a=a.filter(n=>!CQ||n.toLowerCase().includes(CQ.toLowerCase()));return a.map(n=>`<div class="item row">${av(n)}<div style="flex:1">${nm(n)}<div class="mu">${esc(hl(n))}</div></div><button class="btn" data-msgto="${esc(n)}">Message</button><button class="btn" data-rmc="${esc(n)}">Remove</button></div>`).join('')||'<div class="mu" style="margin-top:8px">'+(CQ?'No matches.':'No connections yet. Accept an invitation or connect with people to see them here.')+'</div>'};
+function net(){let nt=D.ntab;nt=({sent:'inv',fol:'ff'})[nt]||nt;
+const sub=['conn','ff','pages','inv','pymk'].includes(nt),c=cnt(D.conn);
+const head=sub?`<div class="card"><button class="lnk" data-nt="grow">← Back to My Network</button></div>`:`<div class="card"><div class="pills" style="margin:0">${[['grow','Grow'],['catch','Catch up']].map(t=>`<button class="btn ${(nt==t[0]||(t[0]=='grow'&&nt!='catch'))?'fill':''}" data-nt="${t[0]}">${t[1]}</button>`).join('')}</div></div>${mgm()}`;
+const pr=(n,s,btn)=>`<div class="item row">${av(n)}<div style="flex:1">${nm(n)}<div class="mu">${esc(s)}</div></div>${btn}</div>`;
+const aci=n=>pr(n,hl(n),`<button class="btn" data-ig="${n}">Ignore</button><button class="btn fill" data-ac="${n}">Accept</button>`);
+const fq=p=>!q||p.join(' ').toLowerCase().includes(q.toLowerCase());
+const sg=(p,i)=>`<div class="card" style="padding-top:16px"><div style="display:flex;justify-content:center;margin-bottom:8px">${av(p[0],i+1)}</div>${nm(p[0])}<div class="mu" style="margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(p[1])}</div><div class="mu" style="margin-bottom:8px">${esc(p[2]||((p[0].length%9)+2)+' mutual connections')}</div>${cnBtn(p[0])}</div>`;
+if(nt=='conn')return head+`<div class="card"><b style="font-size:16px">${c+312} Connections</b><div class="mu">Showing connections you made in this demo.</div><div class="pills">Sort by: ${[['recent','Recently added'],['first','First name'],['last','Last name']].map(s=>`<button class="btn ${D.csort==s[0]?'fill':''}" data-cs="${s[0]}">${s[1]}</button>`).join('')}</div><input class="fi" id="cq" placeholder="Search by name" value="${esc(CQ)}"><div id="cl">${connList()}</div></div>`;
+if(nt=='ff'){const ing=PEOPLE.map(p=>p[0]).concat(COMP).filter(n=>D.fol[n]),f=D.fft;return head+`<div class="card"><div class="pills" style="margin:0">${[['fing','Following ('+ing.length+')'],['fers','Followers ('+(134+c)+')']].map(t=>`<button class="btn ${f==t[0]?'fill':''}" data-ff="${t[0]}">${t[1]}</button>`).join('')}</div></div><div class="card">`+(f=='fing'?(ing.map(n=>pr(n,hl(n),flBtn(n))).join('')||'<div class="mu">You aren’t following anyone yet. Follow people and pages to see their posts in your feed.</div>'):PEOPLE.slice(0,5).map(p=>pr(p[0],p[1],flBtn(p[0]))).join('')+'<div class="mu" style="margin-top:8px">Showing a sample of your followers.</div>')+'</div>'}
+if(nt=='pages'){const row=n=>pr(n,'Company · '+JOBS.filter(j=>j[1]==n).length+' open jobs',flBtn(n)),fp=COMP.filter(n=>D.fol[n]),dp=COMP.filter(n=>!D.fol[n]);return head+`<div class="card"><b>Pages you follow (${fp.length})</b>`+(fp.map(row).join('')||'<div class="mu" style="margin-top:6px">You aren’t following any pages yet.</div>')+`</div><div class="card"><b>Discover pages</b>`+(dp.map(row).join('')||'<div class="mu">You follow every page here!</div>')+'</div>'}
+if(nt=='inv'){const pend=Object.keys(D.pend).filter(k=>D.pend[k]);return head+`<div class="card"><div class="pills" style="margin:0">${[['rec','Received ('+D.inv.length+')'],['sent','Sent ('+pend.length+')']].map(t=>`<button class="btn ${D.invt==t[0]?'fill':''}" data-it="${t[0]}">${t[1]}</button>`).join('')}</div></div><div class="card">`+(D.invt=='rec'?(D.inv.map(aci).join('')||'<div class="mu">No pending invitations.</div>'):(pend.map(n=>pr(n,hl(n),`<button class="btn" data-cn="${esc(n)}">Withdraw</button>`)).join('')||'<div class="mu">No sent invitations. New invitations are accepted within seconds in this demo.</div>'))+'</div>'}
+if(nt=='pymk')return head+`<div class="card"><b>People you may know</b></div><div class="grid">`+SUG.concat(PEOPLE.filter(p=>!D.inv.includes(p[0])&&!D.conn[p[0]])).filter(fq).map(sg).join('')+'</div>';
+if(nt=='catch'){const f=D.cuf,l=cuList().map((x,i)=>[x,i]).filter(([x])=>f=='all'||x[1][2]==f);return head+`<div class="card"><b>Catch up with your network</b><div class="pills">${[['all','All'],['birthday','Birthdays'],['anniv','Work anniversaries'],['job','Job changes'],['cert','Certifications']].map(t=>`<button class="btn ${f==t[0]?'fill':''}" data-cuf="${t[0]}">${t[1]}</button>`).join('')}</div>`+(l.map(([x,i])=>{const t=x[1];return `<div class="item row">${av(x[0])}<div style="flex:1">${nm(x[0])}<div class="mu">${t[0]} ${t[1]}</div></div>${D.cu[x[0]+'|'+t[2]]?'<span class="mu">✓ Sent</span>':`<button class="btn" data-cu="${i}">${t[3]}</button>`}</div>`}).join('')||'<div class="mu" style="margin-top:6px">Connect with people to see their birthdays, work anniversaries and job changes here.</div>')+'</div>'}
+return head+`<div class="card"><div class="row"><b style="flex:1">${D.inv.length?'Invitations ('+D.inv.length+')':'No pending invitations'}</b><button class="btn" data-nt="inv">Manage</button></div>${D.inv.map(aci).join('')}</div>`
++`<div class="card"><b>Wind down with a puzzle 😌</b>`+GAMES.map((g,i)=>`<div class="item gm"><div class="ic" style="background:${col[i%6]}">${g[2]}</div><div style="flex:1"><b>${g[0]}</b><div class="mu">${g[1]+(D.games[g[0]]?1:0)} connections played</div></div><button class="btn ${D.games[g[0]]?'':'fill'}" data-sg="${i}">${D.games[g[0]]?'✓ Solved':'Solve'}</button></div>`).join('')+'</div>'
++`<div class="card"><b>People who viewed your profile</b>`+['Central Board of Secondary Education','Rajasthan Institute of Engineering & Technology (RIET-Jaipur)','Ajay Kumar Garg Engineering College, Ghaziabad'].map(s=>`<div class="item row"><div class="av" style="background:var(--bd);filter:blur(1.5px)">👤</div><div style="flex:1"><b>Someone at ${esc(s)}</b></div><button class="btn" data-v="viewers">View</button></div>`).join('')+`<div class="item row"><div style="flex:1"><b>🔒 Unlock all with Premium</b></div><button class="btn fill" data-prem>Reactivate Premium</button></div></div>`
++`<div class="card"><div class="row"><b style="flex:1">People you may know based on your recent activity</b><button class="lnk" data-nt="pymk">Show all</button></div></div><div class="grid">`+SUG.filter(fq).map(sg).join('')+'</div>'}
+function netOld(){const nt=D.ntab,pend=Object.keys(D.pend).filter(k=>D.pend[k]);
+const tabs=`<div class="card"><div class="pills" style="margin:0">${[['grow','Grow'],['sent','Sent ('+pend.length+')'],['fol','Following']].map(t=>`<button class="btn ${nt==t[0]?'fill':''}" data-nt="${t[0]}">${t[1]}</button>`).join('')}</div></div>`;
+if(nt=='sent')return tabs+`<div class="card"><b>Sent invitations</b>`+(pend.map(n=>`<div class="item row">${av(n)}<div style="flex:1">${nm(n)}<div class="mu">${hl(n)}</div></div><button class="btn" data-cn="${esc(n)}">Withdraw</button></div>`).join('')||'<div class="mu" style="margin-top:6px">No pending invitations. Invitations are usually accepted within seconds in this demo.</div>')+'</div>';
+if(nt=='fol')return tabs+`<div class="card"><b>People & companies to follow</b>`+PEOPLE.map(p=>[p[0],p[1]]).concat(COMP.map(c=>[c,'Company'])).map(p=>`<div class="item row">${av(p[0])}<div style="flex:1">${nm(p[0])}<div class="mu">${p[1]}</div></div>${flBtn(p[0])}</div>`).join('')+'</div>';
+const sug=PEOPLE.filter(p=>!D.inv.includes(p[0])&&p[0]!=U.name&&(!q||p.join(' ').toLowerCase().includes(q.toLowerCase())));const cl=Object.keys(D.conn).filter(k=>D.conn[k]).map(n=>`<div class="item row">${av(n)}<div style="flex:1">${nm(n)}</div><button class="btn" data-msgto="${esc(n)}">Message</button><button class="btn" data-rmc="${esc(n)}">Remove</button></div>`).join('')||'<div class="mu">No connections yet. Connect with people below.</div>';
+return tabs+(D.inv.length?`<div class="card"><b>Invitations (${D.inv.length})</b>`+D.inv.map(n=>`<div class="item row">${av(n)}<div style="flex:1">${nm(n)}<div class="mu">${hl(n)}</div></div><button class="btn" data-ig="${n}">Ignore</button><button class="btn fill" data-ac="${n}">Accept</button></div>`).join('')+'</div>':'')+
+`<div class="card"><b>My connections</b>${cl}</div><div class="card"><b>People you may know</b> <span class="mu">· type in search to find people</span></div><div class="grid">`+sug.map((p,i)=>`<div class="card" style="padding-top:16px"><div style="display:flex;justify-content:center;margin-bottom:8px">${av(p[0],i+1)}</div>${nm(p[0])}<div class="mu" style="margin-bottom:10px">${p[1]}</div>${cnBtn(p[0])}</div>`).join('')+'</div>'}
+const wt=j=>/Remote/i.test(j[2])?'Remote':/Hybrid/i.test(j[2])?'Hybrid':'On-site';
+function jobs(){const f=JOBS.map((j,i)=>[j,i]).filter(([j,i])=>(!q||(j.join(' ')).toLowerCase().includes(q.toLowerCase()))&&(D.jw=='all'||wt(j)==D.jw)&&(D.jtab=='all'||(D.jtab=='saved'&&D.saved[i])||(D.jtab=='applied'&&D.applied[i])));
+return `<div class="card"><div class="row"><b style="flex:1">🔔 Job alerts</b><button class="btn" data-ja>+ Create alert</button></div>`+(D.alerts.map((a,i)=>`<div class="item row"><div style="flex:1"><b>${esc(a)}</b><div class="mu">${JOBS.filter(j=>j.join(' ').toLowerCase().includes(a.toLowerCase())).length} matching jobs</div></div><button class="btn" data-jh="${esc(a)}">View</button><button class="btn" data-jadel="${i}">Delete</button></div>`).join('')||'<div class="mu" style="margin-top:6px">Get notified when jobs matching a keyword are posted.</div>')+`</div>`+
+`<div class="card"><div class="row"><b style="flex:1">Jobs</b><button class="btn fill" data-pj>+ Post a job</button></div><div class="pills">${['all','saved','applied'].map(k=>`<button class="btn ${D.jtab==k?'fill':''}" data-jt="${k}">${k[0].toUpperCase()+k.slice(1)}</button>`).join('')}</div><div class="pills" style="margin-top:0"><span class="mu" style="align-self:center">Workplace:</span>${['all','Remote','Hybrid','On-site'].map(k=>`<button class="btn ${D.jw==k?'fill':''}" data-jw="${k}">${k=='all'?'Any':k}</button>`).join('')}</div>`+
+(f.map(([j,i])=>`<div class="item"><div class="row" style="align-items:flex-start">${av(j[1],i+2)}<div style="flex:1"><b>${esc(j[0])}</b><div>${nm(j[1])}</div><div class="mu">${esc(j[2])} · ${esc(j[3])}</div>${D.applied[i]&&D.applied[i].at?`<div class="mu">Applied on ${esc(D.applied[i].at)}</div>`:''}</div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn" data-sv="${i}">${D.saved[i]?'★ Saved':'☆ Save'}</button><button class="btn fill" data-ap="${i}" ${D.applied[i]?'disabled':''}>${D.applied[i]?'Applied':'Easy Apply'}</button>${D.applied[i]?`<button class="btn" data-wd="${i}">Withdraw</button>`:''}</div></div><button class="lnk" data-jd="${i}">${JX[i]?'Hide':'Show'} details</button>${JX[i]?`<div class="mu" style="margin-top:4px">${esc(j[4]||'Join the team to build and ship products used by millions. Strong fundamentals and good communication expected. Freshers are welcome.')}<br>Workplace type: ${wt(j)}</div>`:''}</div>`).join('')||'<div class="mu">Nothing here yet.</div>')+'</div>'}
+function msg(){if(D.chat>=D.chats.length)D.chat=Math.max(0,D.chats.length-1);const c=D.chats[D.chat],f=D.mf;
+const pill=(k,l)=>`<button class="mf ${f==k?'on':''}" data-mf="${k}">${l}</button>`;
+let body='';
+if(c){let prev=null,pd=null;body=`<div class="intro">${av(c[0],D.chat+1)}<b>${esc(c[0])}</b><div class="mu">${esc(hl(c[0])||'LinkSphere member')}</div>${PX[c[0]]?`<button class="lnk" data-pf="${esc(c[0])}">View profile</button>`:''}</div>`+c[1].map((m,mx)=>{const me=!!m[1],who=me?U.name:c[0],dl=dayL(m[2]),sep=dl!=pd?`<div class="dsep"><span>${dl}</span></div>`:'',hd=(dl!=pd||prev!==me)?`<div class="mh">${av(who,me?5:D.chat+1)}<b>${esc(who)}</b><span class="mu">${tmL(m[2])}</span></div>`:'';prev=me;pd=dl;return sep+hd+`<div class="mt">${esc(m[0])}${me?`<button class="lnk md" data-md="${mx}" title="Delete message" aria-label="Delete message">✕</button>`:''}</div>`}).join('')+(TY&&TY==c[0]?`<div class="mt mu">typing…</div>`:'')}
+const emo=['😊','👍','🎉','🙏','🔥','👏','😂','❤️'].map(e=>`<button data-em="${e}" aria-label="Add emoji">${e}</button>`).join('');
+return `<div class="card mw ${CO?'co':''}"><div class="ml"><div class="mhd"><b style="font-size:16px;flex:1">Messaging</b><button class="ib" data-nmsg title="New message" aria-label="New message">✏️</button></div><div class="msr"><input class="fi" id="cs2" placeholder="Search messages" value="${esc(CS)}"></div><div class="mfs">${pill('all','Focused')}${pill('unread','Unread')}${pill('conn','My Connections')}${pill('star','Starred')}</div><div id="cl2" class="cls">${chatList()}</div></div><div class="mr">`
++(c?`<div class="mrh"><button class="ib mbk" data-cb aria-label="Back to conversations">←</button><div style="flex:1;min-width:0">${nm(c[0])}<div class="mu" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(hl(c[0]))}</div></div><button class="ib" data-star="${esc(c[0])}" title="Star conversation" aria-label="Star conversation">${D.star[c[0]]?'★':'☆'}</button><button class="ib" data-dc title="Delete conversation" aria-label="Delete conversation">🗑</button></div><div class="msgs" id="ms">${body}</div><div class="cmp">${EMO?`<div class="emo">${emo}</div>`:''}<textarea id="mi" rows="1" placeholder="Write a message…">${esc(MD)}</textarea><div class="row" style="margin-top:6px"><button class="ib" data-emo title="Emoji" aria-label="Emoji">😊</button><span style="flex:1"></span><button class="btn fill" id="ms2" ${MD.trim()?'':'disabled'}>Send</button></div></div>`:'<div class="mu" style="padding:40px;text-align:center">Select a conversation or start a new message.</div>')+`</div></div>`}
+const CX={'TechHire India':{ind:'Staffing & Recruiting',size:'201-500 employees',hq:'Noida, India',f:84210,about:'We connect fresh engineering talent with product teams across India. Java, web and data roles for freshers and early-career developers.'},
+'Zoho':{ind:'Software Development',size:'10,001+ employees',hq:'Chennai, India',f:1200000,about:'Business software for teams of every size, built in-house with a focus on privacy and long-term thinking.'},
+'Paytm':{ind:'Financial Services',size:'10,001+ employees',hq:'Noida, India',f:2100000,about:'Digital payments and financial services platform serving millions of customers and merchants.'},
+'Adobe':{ind:'Software Development',size:'10,001+ employees',hq:'San Jose, USA',f:5400000,about:'Creative, document and experience tools used by designers, marketers and developers worldwide.'},
+'Flipkart':{ind:'E-commerce',size:'10,001+ employees',hq:'Bengaluru, India',f:3300000,about:'Large-scale e-commerce marketplace building high-traffic systems for shoppers across India.'},
+'Deloitte':{ind:'Professional Services',size:'10,001+ employees',hq:'Gurugram, India',f:9800000,about:'Audit, consulting, tax and advisory services with a growing analytics and technology practice.'}};
+function srchV(){const k=q.trim().toLowerCase(),t=D.stab||'all',has=s=>s.toLowerCase().includes(k);
+const L={people:PEOPLE.concat(SUG.map(x=>[x[0],x[1]])).filter(p=>has(p[0]+' '+p[1])),jobs:JOBS.map((j,i)=>[j,i]).filter(([j])=>has(j.join(' '))),posts:D.posts.filter(p=>has(p.t+' '+p.n)),companies:COMP.filter(has),groups:GR.map((g,i)=>[g,i]).filter(([g])=>has(g[0]))};
+const NAMES={people:'People',jobs:'Jobs',posts:'Posts',companies:'Companies',groups:'Groups'};
+const rw={people:p=>`<div class="item row">${av(p[0])}<div style="flex:1;min-width:0">${nm(p[0])}<div class="mu">${esc(p[1])}</div></div>${cnBtn(p[0])}</div>`,
+jobs:([j,i])=>`<div class="item row">${av(j[1],i+2)}<div style="flex:1;min-width:0"><b>${esc(j[0])}</b><div>${nm(j[1])}</div><div class="mu">${esc(j[2])} · ${esc(j[3])}</div></div><button class="btn" data-sj="${i}">View job</button></div>`,
+posts:p=>`<div class="item"><div class="row">${av(p.n,p.id)}<div style="flex:1">${nm(p.n)}<div class="mu">${esc(p.r)} · ${p.time}</div></div></div><p style="margin:6px 0;white-space:pre-wrap">${tag(p.t)}</p><div class="mu">${p.l} reactions · ${p.c.length} comments</div></div>`,
+companies:n=>`<div class="item row">${av(n)}<div style="flex:1">${nm(n)}<div class="mu">${esc(CX[n].ind)} · ${esc(CX[n].hq)}</div></div>${flBtn(n)}</div>`,
+groups:([g,i])=>`<div class="item row">${av(g[0],i+1)}<div style="flex:1"><b>${esc(g[0])}</b><div class="mu">${g[1]}</div></div>${tog('gr',i,D.gr[i],'✓ Joined','Join')}</div>`};
+const total=Object.values(L).reduce((a,b)=>a+b.length,0);
+const pills=`<div class="card"><b>${k?'Results for “'+esc(q.trim())+'”':'Search LinkSphere'}</b><div class="pills"><button class="btn ${t=='all'?'fill':''}" data-st="all">All</button>${Object.keys(NAMES).map(x=>`<button class="btn ${t==x?'fill':''}" data-st="${x}">${NAMES[x]} (${L[x].length})</button>`).join('')}</div></div>`;
+if(!k)return pills+'<div class="card mu">Type a name, job title, company, group or keyword in the search box and press Enter.</div>';
+if(!total)return pills+'<div class="card mu">No results found. Try a different keyword.</div>';
+if(t!='all')return pills+`<div class="card"><b>${NAMES[t]}</b>`+(L[t].map(rw[t]).join('')||'<div class="mu" style="margin-top:6px">Nothing found.</div>')+'</div>';
+return pills+Object.keys(NAMES).filter(x=>L[x].length).map(x=>`<div class="card"><b>${NAMES[x]}</b>${L[x].slice(0,3).map(rw[x]).join('')}${L[x].length>3?`<button class="lnk" data-st="${x}" style="margin-top:6px">See all ${L[x].length} ${NAMES[x].toLowerCase()} →</button>`:''}</div>`).join('')}
+function coV(){const n=D.co,x=CX[n];if(!x)return '<div class="card mu">Page not found.</div>';
+const jb=JOBS.map((j,i)=>[j,i]).filter(([j])=>j[1]==n),ps=D.posts.filter(p=>p.n==n),emp=PEOPLE.filter(p=>p[1].endsWith(' at '+n)),t=D.ctab||'about';
+let body='';
+if(t=='about')body=`<div class="card"><b>Overview</b><p style="margin:8px 0">${esc(x.about)}</p><div class="mu">Industry: ${esc(x.ind)}<br>Company size: ${esc(x.size)}<br>Headquarters: ${esc(x.hq)}</div></div>`;
+if(t=='posts')body=`<div class="card"><b>Posts</b>`+(ps.map(p=>`<div class="item"><div>${tag(p.t)}</div><div class="mu">${p.l} reactions · ${p.c.length} comments · ${p.time}</div></div>`).join('')||'<div class="mu" style="margin-top:6px">No posts yet.</div>')+'</div>';
+if(t=='jobs')body=`<div class="card"><b>Open jobs</b>`+(jb.map(([j,i])=>`<div class="item row"><div style="flex:1"><b>${esc(j[0])}</b><div class="mu">${esc(j[2])} · ${esc(j[3])}</div></div><button class="btn fill" data-sj="${i}">View job</button></div>`).join('')||'<div class="mu" style="margin-top:6px">No open jobs right now.</div>')+'</div>';
+if(t=='people')body=`<div class="card"><b>People who work here</b>`+(emp.map(p=>`<div class="item row">${av(p[0])}<div style="flex:1">${nm(p[0])}<div class="mu">${esc(p[1])}</div></div>${cnBtn(p[0])}</div>`).join('')||'<div class="mu" style="margin-top:6px">No members listed yet.</div>')+'</div>';
+return `<div class="card"><button class="lnk" data-t="${D.back||'home'}">← Back</button></div><div class="card prof" style="overflow:visible;text-align:left"><div class="cover" style="height:90px;border-radius:8px 8px 0 0;background:linear-gradient(120deg,${col[n.length%6]},#0a66c2)"></div><div class="in" style="padding-top:0"><div style="margin-top:-40px">${av(n,n.length)}</div><div style="height:0"></div><h2 style="margin-top:-24px;padding-top:0">${esc(n)}</h2><div>${esc(x.ind)}</div><div class="mu">${esc(x.hq)} · ${(x.f+(D.fol[n]?1:0)).toLocaleString()} followers · ${esc(x.size)}</div><div class="pills" style="margin-top:10px">${flBtn(n)}</div></div></div><div class="card"><div class="pills" style="margin:0">${[['about','About'],['posts','Posts ('+ps.length+')'],['jobs','Jobs ('+jb.length+')'],['people','People ('+emp.length+')']].map(a=>`<button class="btn ${t==a[0]?'fill':''}" data-ctb="${a[0]}">${a[1]}</button>`).join('')}</div></div>`+body}
+function bell(){const f=D.nf,l=D.notes.map((n,i)=>[n,i]).filter(([n])=>f=='all'||ncat(n)==f);
+return `<div class="card"><div class="row"><b style="flex:1">Notifications</b>${D.notes.length?'<button class="btn" data-nc>Clear all</button>':''}</div><div class="pills">${[['all','All'],['jobs','Jobs'],['posts','My posts'],['net','Network']].map(t=>`<button class="btn ${f==t[0]?'fill':''}" data-nf="${t[0]}">${t[1]}</button>`).join('')}</div>`+(l.map(([n,i])=>`<div class="item row"><div style="flex:1">${({jobs:'💼',posts:'💬',net:'👥'})[ncat(n)]} ${esc(n)}</div><button class="lnk" data-nd="${i}" aria-label="Delete notification">✕</button></div>`).join('')||'<div class="mu" style="margin-top:6px">Nothing here.</div>')+'</div>'}
+function pf(){const n=D.pf,x=PX[n];if(!x)return '<div class="card mu">Profile not found.</div>';
+const mine=D.posts.filter(p=>p.n==n);
+return `<div class="card"><button class="lnk" data-t="${D.back||'home'}">← Back</button></div><div class="card prof" style="overflow:visible;text-align:left"><div class="cover" style="height:90px;border-radius:8px 8px 0 0;background:linear-gradient(120deg,${col[n.length%6]},#0a66c2)"></div><div class="in" style="padding-top:0"><div style="margin-top:-40px">${av(n,n.length)}</div><div style="height:0"></div><h2 style="margin-top:-24px;padding-top:0">${esc(n)}</h2><div>${esc(hl(n))}</div><div class="mu">${esc(x.loc)} · ${(n.length%7)+2} mutual connections</div><div class="pills" style="margin-top:10px">${cnBtn(n)}<button class="btn" data-msgto="${esc(n)}">Message</button>${flBtn(n)}</div></div></div>
+<div class="card"><b>About</b><p style="margin-top:6px">${esc(x.about)}</p></div>
+<div class="card"><b>Skills</b>`+x.skills.map((s,i)=>`<div class="item row"><div style="flex:1"><b>${esc(s)}</b><div class="mu">${((n.length+i*3)%9)+2+(D.en[n+':'+i]?1:0)} endorsements</div></div><button class="btn ${D.en[n+':'+i]?'':'fill'}" data-en="${esc(n)}:${i}">${D.en[n+':'+i]?'✓ Endorsed':'+ Endorse'}</button></div>`).join('')+`</div><div class="card"><b>Activity</b>`+(mine.map(p=>`<div class="item"><div>${tag(p.t)}</div><div class="mu">${p.liked?R[p.liked-1][0]:'👍'} ${p.l} · 💬 ${p.c.length} · ${p.time}</div></div>`).join('')||'<div class="mu" style="margin-top:6px">No recent posts.</div>')+'</div>'}
+const VER="1.9.0";let PIMG=null,PTXT="",MENU=null,OTD=0,ATAB='posts',RM=null,JX={};
+const mn=(k,l,items,cls='')=>`<div class="mnw"><button class="btn ${cls}" data-mn="${k}">${l} ▾</button>${MENU==k?`<div class="mnu">${items.map(i=>`<button ${i[0]}>${i[1]}</button>`).join('')}</div>`:''}</div>`;
+const otCard=()=>{if(!D.otw)return '';const o=D.ot;return `<div style="border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-top:12px;display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><b>Open to work · ${esc(o.vis)}</b><div>${esc(D.loc)} | ${esc(o.types)}</div><button class="lnk" data-otd style="color:var(--pr);font-weight:600">${OTD?'Hide':'Show'} details</button>${OTD?`<div class="mu" style="margin-top:6px">Job titles: ${esc(o.titles)||'Not set'}<br>Start date: ${esc(o.start)}<br>Visible to: ${esc(o.vis)}</div>`:''}</div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn" data-ote>Edit</button><button class="btn" data-otv>${o.vis=='Recruiters only'?'Show to all members':'Recruiters only'}</button><button class="btn" data-otw>Turn off</button></div></div>`};
+let FM=null;
+const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const mm=s=>{if(!s)return '';const p=String(s).split('-');return p[1]?MO[+p[1]-1]+' '+p[0]:p[0]};
+const rg=x=>x.dt||((x.sm||x.em||x.cur)?[mm(x.sm),x.cur?'Present':mm(x.em)].filter(Boolean).join(' – '):'');
+const slugOf=n=>(n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'member');
+const EMP=['Full-time','Part-time','Self-employed','Freelance','Contract','Internship','Apprenticeship'];
+const SCH={
+intro:{t:'Edit intro',f:[['fn','First name*'],['ln','Last name*'],['pro','Pronouns','sel',['','He/Him','She/Her','They/Them']],['headline','Headline*'],['cpos','Current position / company'],['csch','Education / school'],['ind','Industry'],['loc','Location (city, country)']]},
+contact:{t:'Contact info',f:[['slug','Your profile URL (linksphere.app/in/…)'],['email','Email','ro'],['phone','Phone'],['ptype','Phone type','sel',['Mobile','Home','Work']],['site','Website'],['addr','Address'],['bday','Birthday','date']]},
+about:{t:'Edit about',f:[['about','Write about your years of experience, industry, or skills','area']]},
+ot:{t:'Job preferences',f:[['titles','Job titles you are open to (comma separated)'],['types','Workplace types','sel',['On-site · Hybrid','On-site','Hybrid','Remote','On-site · Hybrid · Remote']],['start','Start date','sel',['Immediately','Flexible, I am passively browsing','Within 1–2 months']],['vis','Who can see you are open to work','sel',['Recruiters only','All members']]]},
+skills:{ttl:['Add skill','Edit skill'],f:[['n','Skill*']]},
+exp:{ttl:['Add experience','Edit experience'],f:[['t','Title*'],['c','Company name*'],['type','Employment type','sel',['',...EMP]],['loc','Location'],['cur','I am currently working in this role','chk'],['sm','Start date','month'],['em','End date','month'],['desc','Description','area']]},
+edu:{ttl:['Add education','Edit education'],f:[['s','School*'],['deg','Degree'],['fos','Field of study'],['sy','Start year','year'],['ey','End year (or expected)','year'],['grade','Grade'],['desc','Activities and societies / description','area']]},
+cert:{ttl:['Add license or certification','Edit license or certification'],f:[['n','Name*'],['org','Issuing organization*'],['iss','Issue date','month'],['exp','Expiration date','month'],['cid','Credential ID'],['url','Credential URL']]},
+proj:{ttl:['Add project','Edit project'],f:[['n','Project name*'],['sm','Start date','month'],['em','End date','month'],['desc','Description','area'],['url','Project URL']]},
+vol:{ttl:['Add volunteer experience','Edit volunteer experience'],f:[['role','Role*'],['org','Organization*'],['sm','Start date','month'],['em','End date','month'],['desc','Description','area']]},
+rec:{ttl:['Add recommendation','Edit recommendation'],f:[['by','Recommended by*'],['rel','Relationship (e.g. Manager)'],['text','Recommendation*','area']]},
+course:{ttl:['Add course','Edit course'],f:[['n','Course name*'],['num','Course number']]},
+award:{ttl:['Add honor or award','Edit honor or award'],f:[['t','Title*'],['iss','Issuer'],['date','Issue date','month'],['desc','Description','area']]},
+lang:{ttl:['Add language','Edit language'],f:[['n','Language*'],['lvl','Proficiency','sel',['Elementary proficiency','Limited working proficiency','Professional working proficiency','Full professional proficiency','Native or bilingual proficiency']]]},
+feat:{ttl:['Add featured item','Edit featured item'],f:[['title','Title*'],['url','Link'],['desc','Description','area']]}};
+const IT={
+feat:{h:'Featured',ic:'⭐',r:x=>[x.title,'','',[x.desc,x.url].filter(Boolean).join('\n')]},
+exp:{h:'Experience',ic:'🏢',hint:'Add your work history, including internships and freelance work.',r:x=>[x.t,[x.c,x.type].filter(Boolean).join(' · '),[rg(x),x.loc].filter(Boolean).join(' · '),x.desc]},
+edu:{h:'Education',ic:'🎓',hint:'Add your school, degree and years.',r:x=>[x.s,[x.deg,x.fos].filter(Boolean).join(', '),x.dt||[x.sy,x.ey].filter(Boolean).join(' – '),[x.grade?'Grade: '+x.grade:'',x.desc].filter(Boolean).join('\n')]},
+cert:{h:'Licenses & certifications',ic:'📜',r:x=>[x.n,x.org,[x.iss?'Issued '+mm(x.iss):x.dt,x.exp?'Expires '+mm(x.exp):'',x.cid?'Credential ID '+x.cid:''].filter(Boolean).join(' · '),x.url]},
+proj:{h:'Projects',ic:'🛠',r:x=>[x.n,rg(x),'',[x.desc,x.url].filter(Boolean).join('\n')]},
+vol:{h:'Volunteer experience',ic:'🤝',r:x=>[x.role,x.org,rg(x),x.desc]},
+rec:{h:'Recommendations',ic:'💬',r:x=>[x.by,x.rel,'',x.text]},
+course:{h:'Courses',ic:'📚',r:x=>[x.n,x.num?'Number: '+x.num:'','','']},
+award:{h:'Honors & awards',ic:'🏆',r:x=>[x.t,x.iss?'Issued by '+x.iss:'',mm(x.date),x.desc]},
+lang:{h:'Languages',ic:'🌐',r:x=>[x.n,x.lvl,'','']}};
+function migrate(){D.award=D.award||[];D.course=D.course||[];D.contact=D.contact||{};if(D.v17)return;D.v17=1;
+D.exp=D.exp.map(x=>Array.isArray(x)?{t:x[0],c:x[1],dt:x[2]}:x);
+D.edu=D.edu.map(x=>Array.isArray(x)?{s:x[0],deg:x[1],dt:x[2]}:x);
+D.cert=D.cert.map(x=>Array.isArray(x)?{n:x[0],org:x[1],dt:x[2]}:x);
+D.proj=D.proj.map(x=>Array.isArray(x)?{n:x[0],desc:x[1],url:x[2]}:x);
+D.lang=D.lang.map(x=>Array.isArray(x)?{n:x[0],lvl:x[1]}:x);
+D.vol=D.vol.map(x=>Array.isArray(x)?{role:x[0],org:x[1],dt:x[2]}:x);
+D.rec=D.rec.map(x=>Array.isArray(x)?{by:x[0],rel:x[1],text:x[2]}:x);
+D.feat=D.feat.map(x=>Array.isArray(x)?{title:x[0],desc:x[1],url:x[2]}:x)}
+function openFM(k,i){let v={};
+if(k=='intro'){const p=U.name.split(' ');v={fn:p[0]||'',ln:p.slice(1).join(' '),pro:D.pro||'',headline:D.headline,cpos:D.cpos||'',csch:D.csch||'',ind:D.ind||'',loc:D.loc||''}}
+else if(k=='contact')v=Object.assign({slug:D.slug||slugOf(U.name),phone:'',ptype:'Mobile',site:'',addr:'',bday:''},D.contact||{},{email:U.email});
+else if(k=='about')v={about:D.about||''};
+else if(k=='ot')v=Object.assign({},D.ot);
+else if(k=='skills')v={n:i>=0?D.skills[i]:''};
+else v=i>=0?Object.assign({},D[k][i]):{};
+FM={k,i,v,err:''}}
+function editOT(){openFM('ot',-1)}
+const fld=(f,v)=>{const k=f[0],l=f[1],t=f[2]||'text',o=f[3],id='ff_'+k,val=v[k]==null?'':v[k],lab=`<label class="fl2" for="${id}">${esc(l)}</label>`;
+if(t=='chk')return `<label class="row" style="margin:10px 0"><input type="checkbox" data-f="${k}" ${v[k]?'checked':''}> ${esc(l)}</label>`;
+if(t=='ro')return lab+`<div class="fi" style="background:var(--hv);color:var(--mu)">${esc(String(val))}</div>`;
+if(t=='area')return lab+`<textarea class="fi" id="${id}" data-f="${k}" rows="5">${esc(val)}</textarea>`;
+if(t=='sel')return lab+`<select class="fi" id="${id}" data-f="${k}">${o.map(x=>`<option value="${esc(x)}" ${(val||o[0])==x?'selected':''}>${esc(x)}</option>`).join('')}</select>`;
+const ty={month:'month',date:'date',year:'number'}[t]||'text';
+return lab+`<input class="fi" id="${id}" data-f="${k}" type="${ty}" value="${esc(val)}" ${k=='em'&&v.cur?'disabled':''} ${t=='year'?'min="1950" max="2100"':''}>`};
+const fmodal=()=>{const S=SCH[FM.k],tt=S.ttl?S.ttl[FM.i>=0?1:0]:S.t;
+return `<button class="bk" data-fx aria-label="Close"></button><div class="cmod" role="dialog" aria-label="${esc(tt)}"><div class="row" style="margin-bottom:4px"><b style="flex:1;font-size:18px">${esc(tt)}</b><button class="lnk" data-fx style="font-size:20px" aria-label="Close">✕</button></div><div class="mu">* Indicates required</div>`+S.f.map(f=>fld(f,FM.v)).join('')+`<div class="err" style="margin-top:8px">${esc(FM.err)}</div><div class="row" style="justify-content:space-between;margin-top:4px">${FM.i>=0?'<button class="btn" data-fdel>Delete</button>':'<span></span>'}<button class="btn fill" data-fs>Save</button></div></div>`};
+function fsave(){const S=SCH[FM.k],v=FM.v,k=FM.k,i=FM.i;
+S.f.forEach(f=>{if(f[2]=='sel'&&v[f[0]]==null)v[f[0]]=f[3][0]});
+Object.keys(v).forEach(x=>{if(typeof v[x]=='string')v[x]=v[x].trim()});
+for(const f of S.f){if(/\*$/.test(f[1])&&!v[f[0]]){FM.err=f[1].replace('*','').trim()+' is required.';return app()}}
+if(v.cur)v.em='';
+if(v.sm&&v.em&&v.em<v.sm){FM.err='End date cannot be earlier than start date.';return app()}
+if(v.sy&&v.ey&&+v.ey<+v.sy){FM.err='End year cannot be earlier than start year.';return app()}
+if(v.sm||v.em||v.cur||v.iss||v.sy||v.ey)delete v.dt;
+if(k=='intro'){const old=U.name;U.name=(v.fn+' '+v.ln).trim();D.headline=v.headline;D.pro=v.pro;D.cpos=v.cpos;D.csch=v.csch;D.ind=v.ind;D.loc=v.loc;
+if(old!=U.name){const us=G('lu_users')||{};if(us[U.email]){us[U.email].name=U.name;W('lu_users',us)}
+D.posts.forEach(p=>{if(p.n==old)p.n=U.name;p.c.forEach(c=>{if(c.n==old)c.n=U.name;(c.r||[]).forEach(r=>{if(r.n==old)r.n=U.name})})})}}
+else if(k=='contact'){const sl=(v.slug||'').toLowerCase().replace(/[^a-z0-9-]/g,'');if(sl.length<3){FM.err='Your custom URL must contain 3 or more letters or numbers.';return app()}D.slug=sl;D.contact={phone:v.phone,ptype:v.ptype,site:v.site,addr:v.addr,bday:v.bday}}
+else if(k=='about')D.about=v.about;
+else if(k=='ot'){D.ot={vis:v.vis,titles:v.titles,types:v.types,start:v.start};D.otw=true}
+else if(k=='skills'){if(i>=0)D.skills[i]=v.n;else D.skills.push(v.n)}
+else{if(i>=0)D[k][i]=v;else D[k].push(v)}
+FM=null;save();app()}
+const secCard=k=>{const t=IT[k],a=D[k];return `<div class="card"><div class="row"><b style="flex:1;font-size:16px">${t.h}</b><button class="ib" data-fa="${k}" title="Add ${esc(t.h)}" aria-label="Add ${esc(t.h)}">＋</button></div>`+(a.map((x,i)=>{const r=t.r(x);return `<div class="item row" style="align-items:flex-start"><div class="sqi">${t.ic}</div><div style="flex:1;min-width:0"><b>${esc(r[0]||'')}</b>${r[1]?`<div>${esc(r[1])}</div>`:''}${r[2]?`<div class="mu">${esc(r[2])}</div>`:''}${r[3]?`<p style="margin-top:4px;white-space:pre-wrap;word-break:break-word">${esc(r[3])}</p>`:''}</div><button class="ib" data-fe="${k}:${i}" title="Edit" aria-label="Edit ${esc(t.h)} entry">✎</button></div>`}).join('')||`<div class="mu" style="margin-top:6px">${t.hint||'Add '+t.h.toLowerCase()+' to your profile.'}</div>`)+'</div>'};
+const meCards=()=>{const m=mine(),c=cnt(D.conn);
+return (D.about?'':`<div class="card"><b>Suggested for you</b><div class="mu">🔒 Private to you</div><div style="margin-top:8px"><b>Write a summary to highlight your personality or work experience</b><div class="mu">Members who include a summary receive up to 3.9 times as many profile views.</div><button class="btn" style="margin-top:8px" data-fe="about:-1">Add a summary</button></div></div>`)
++`<div class="card"><b>Analytics</b><div class="mu">🔒 Private to you</div>${[['6 profile views','Discover who’s viewed your profile.','viewers'],[imps()+' post impressions','Check out who’s engaging with your posts · Past 7 days','imp'],[(5+c)+' search appearances','See how often you appear in search results.','viewers']].map(a=>`<button class="lnk item" data-v="${a[2]}" style="display:block;width:100%;text-align:left;color:var(--tx)"><b>${a[0]}</b><div class="mu">${a[1]}</div></button>`).join('')}<button class="lnk" data-v="imp" style="margin-top:6px;color:var(--pr);font-weight:600">Show all →</button></div>`
++`<div class="card mset"><b>Settings</b><div class="pills" style="margin-top:8px"><button class="btn" data-th>◐ Light / dark mode</button><button class="btn" data-lo>Sign out</button></div></div>`};
+const actCard=()=>{const m=mine(),c=cnt(D.conn);return `<div class="card"><div class="row"><div style="flex:1"><b style="font-size:16px">Activity</b><div class="mu">${134+c} followers · following ${Object.values(D.fol).filter(Boolean).length}</div></div><button class="btn" data-cp>Create a post</button></div><div class="pills" style="margin-top:8px">${[['posts','Posts'],['img','Images']].map(t=>`<button class="btn ${ATAB==t[0]?'fill':''}" data-at="${t[0]}">${t[1]}</button>`).join('')}</div>${ATAB=='posts'?(m.slice(0,3).map(p=>`<div class="item"><div>${tag(p.t)}</div><div class="mu">${p.liked?R[p.liked-1][0]:'👍'} ${p.l} · 💬 ${p.c.length} · ${p.time}</div></div>`).join('')||'<div class="mu" style="margin-top:8px">You haven’t posted yet. Posts you share will be displayed here.</div>'):(m.filter(p=>p.img).length?`<div class="gal">${m.filter(p=>p.img).map(p=>`<img src="${p.img}" alt="Your post image">`).join('')}</div>`:'<div class="mu" style="margin-top:8px">You haven’t posted any images yet. Use 📷 Photo when creating a post.</div>')}</div>`};
+function me(){const c=cnt(D.conn),cp=D.cpos||(D.exp[0]&&D.exp[0].c)||'',sc=D.csch||(D.edu[0]&&D.edu[0].s)||'';
+const sec=[['about','Summary'],['exp','Experience'],['edu','Education'],['skills','Skills'],['cert','Licenses & certifications'],['proj','Project'],['vol','Volunteer experience'],['rec','Recommendation'],['feat','Featured'],['course','Course'],['award','Honors & awards'],['lang','Language']];
+return `<div class="card prof" style="overflow:visible"><div class="cw"><div class="cover" style="height:110px;border-radius:8px 8px 0 0;${cvr()}"></div><button class="cam" data-up="cover" title="Change cover photo" aria-label="Change cover photo">📷</button></div><div class="in" style="text-align:left;padding-top:0;position:relative"><button class="ib ibp" data-fe="intro:-1" title="Edit intro" aria-label="Edit intro">✎</button><div class="pw" style="margin-top:-45px"><div class="av${D.photo?' ph':''}" style="background:${D.photo?'url('+D.photo+') center/cover':'#0a66c2'};margin:0;width:90px;height:90px;font-size:30px">${D.photo?'':esc(ini(U.name))}</div><button class="cam" data-up="photo" title="Change profile photo" aria-label="Change profile photo">📷</button></div><input type="file" accept="image/*" id="f_photo" hidden><input type="file" accept="image/*" id="f_cover" hidden>
+<div style="display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;margin-top:6px"><div style="min-width:220px;flex:1"><h2>${esc(U.name)}${D.pro?` <span class="mu" style="font-weight:400">(${esc(D.pro)})</span>`:''}</h2><div>${esc(D.headline)}</div><div class="mu">${[D.loc,D.ind].filter(Boolean).map(esc).join(' · ')}${D.loc||D.ind?' · ':''}<button class="lnk" data-fe="contact:-1" style="font-size:12px">Contact info</button></div><div class="mu" style="margin-top:2px"><b style="color:var(--pr)">${c+312} connections</b> · ${134+c} followers</div></div><div style="font-size:13px;min-width:150px">${cp?`<div>🏢 <b>${esc(cp)}</b></div>`:''}${sc?`<div style="margin-top:6px">🎓 <b>${esc(sc)}</b></div>`:''}</div></div>
+<div class="pills" style="margin-top:10px">${mn('open','Open to',[['data-oa="job"','Finding a new job'],['data-oa="hire"','Hiring']],'fill')}${mn('add','Add profile section',sec.map(s=>[s[0]=='about'?'data-fe="about:-1"':'data-fa="'+s[0]+'"',s[1]]))}${mn('enh','Enhance profile',[['data-up="photo"',(D.photo?'Change':'Add')+' profile photo'],['data-up="cover"',(D.cover?'Change':'Add')+' cover photo'],['data-fe="intro:-1"','Edit intro'],['data-fe="contact:-1"','Contact info &amp; profile URL']].concat(D.photo?[['data-rm="photo"','Remove photo']]:[],D.cover?[['data-rm="cover"','Remove cover']]:[]))}${mn('res','Resources',[['data-v="viewers"','Profile viewers'],['data-v="imp"','Post impressions'],['data-v="saved"','Saved items'],['data-v="groups"','Groups'],['data-v="news"','Newsletters'],['data-v="events"','Events'],['data-pdf','Save profile as PDF'],['data-shp','Copy profile link']])}</div>${otCard()}</div></div>${meCards()}
+<div class="card"><b>Profile strength: ${str()}%</b><div style="height:8px;background:var(--hv);border-radius:4px;margin-top:6px"><div style="height:8px;width:${str()}%;background:#16875f;border-radius:4px"></div></div></div>
+<div class="card"><div class="row"><b style="flex:1;font-size:16px">About</b><button class="ib" data-fe="about:-1" title="Edit about" aria-label="Edit about">✎</button></div><p style="margin-top:6px;white-space:pre-wrap">${esc(D.about)||'<span class="mu">Add a summary about yourself.</span>'}</p></div>
+${secCard('feat')}${actCard()}${secCard('exp')}${secCard('edu')}${secCard('cert')}${secCard('proj')}${secCard('vol')}
+<div class="card"><div class="row"><b style="flex:1;font-size:16px">Skills</b><button class="ib" data-fa="skills" title="Add skill" aria-label="Add skill">＋</button></div>${D.skills.map((s,i)=>`<div class="item row"><b style="flex:1">${esc(s)}</b><button class="ib" data-fe="skills:${i}" title="Edit" aria-label="Edit skill">✎</button></div>`).join('')||'<div class="mu" style="margin-top:6px">Add skills so recruiters can find you.</div>'}</div>
+${secCard('rec')}${secCard('course')}${secCard('award')}${secCard('lang')}<div class="card"><b>Saved posts</b>${D.posts.filter(p=>D.sp[p.id]).map(p=>`<div class="item"><b>${esc(p.n)}</b><div>${tag(p.t)}</div></div>`).join('')||'<div class="mu">No saved posts yet.</div>'}</div>`}
+const tag=s=>esc(s).replace(/#(\w+)/g,'<button class="lnk" data-tg="$1">#$1</button>'),str=()=>Math.round([D.about,D.exp.length,D.edu.length,D.skills.length,D.headline!='Student | Aspiring Professional',D.otw].filter(Boolean).length/6*100);
+const GR=[['Java Developers India','48,210 members'],['Full Stack Web Dev','31,904 members'],['Startup Founders Network','22,150 members'],['Women in Tech','65,432 members']],NL=[['The Dev Weekly','Every Friday · 12k subscribers'],['Career Catalyst','Every Monday · 8k subscribers'],['AI in Practice','Biweekly · 15k subscribers']],EV=[['Java Meetup Noida','Sat, 14 Nov · 10:00 AM · Offline'],['Full Stack Hackathon','Sun, 22 Nov · Online'],['Resume & Interview Workshop','Fri, 4 Dec · 6:00 PM · Online']];
+const mine=()=>D.posts.filter(p=>p.mine),imps=()=>4+mine().reduce((a,p)=>a+p.l*12+p.c.length*8,0);
+const side=(v,l,n)=>`<button class="lnk" data-v="${v}" style="display:flex;justify-content:space-between;width:100%;padding:6px 0;text-align:left;color:var(--tx)"><span>${l}</span>${n!=null?`<b style="color:var(--pr)">${n}</b>`:''}</button>`;
+const tog=(k,i,on,a,b)=>`<button class="btn ${on?'':'fill'}" data-jn="${k}:${i}">${on?a:b}</button>`;
+const lst=(h,arr,k,a,b)=>`<div class="card"><div class="row"><b style="flex:1">${h}</b>${CR[k]?`<button class="btn" data-cr="${k}">+ Create</button>`:''}</div>`+arr.map((x,i)=>`<div class="item row">${av(x[0],i+1)}<div style="flex:1"><b>${x[0]}</b><div class="mu">${x[1]}</div></div>${tog(k,i,D[k][i],a,b)}</div>`).join('')+'</div>';
+GR.push(['Cloud & DevOps India','27,300 members'],['Data Science Community','54,870 members'],['Frontend Developers Hub','36,120 members'],['Freshers Job Alerts','92,440 members'],['Cybersecurity Professionals','18,950 members'],['UI/UX Designers Network','24,610 members'],['Product Managers Circle','19,480 members'],['Open Source Contributors','21,730 members']);
+EV.push(['Cloud Day Pune','Sun, 22 Nov · 11:00 AM · Offline'],['Data Science Webinar','Wed, 18 Nov · 6:00 PM · Online'],['Frontend Meetup Bengaluru','Sat, 28 Nov · 10:30 AM · Offline'],['Resume Workshop for Freshers','Fri, 20 Nov · 5:00 PM · Online'],['Hackathon: Build in 24 Hours','Sat, 5 Dec · 9:00 AM · Hybrid'],['Product Talks Mumbai','Thu, 3 Dec · 7:00 PM · Offline']);
+NL.push(['Frontend Focus','Every Wednesday · 10k subscribers'],['Data Digest','Weekly · 9k subscribers'],['Startup Stories','Every Sunday · 6k subscribers'],['Security Brief','Biweekly · 5k subscribers']);
+const BG=GR.length,BE=EV.length,BN=NL.length,CR={gr:'group',ev:'event',nl:'newsletter'};
+const SAL=[['Software Engineer',4,9],['Java Developer',3.5,8],['Frontend Developer',3,7],['Data Analyst',3.5,7],['DevOps Engineer',5,11],['QA Engineer',3,6],['Product Manager',8,16],['UI/UX Designer',3.5,8],['Cybersecurity Analyst',4.5,10],['ML Engineer',6,14]];
+function salaryV(){const L=D.sl||0,m=[1,1.8,3.2][L],mx=14*3.2;return `<div class="card"><b style="font-size:18px">💰 Salary insights</b><div class="mu">Estimated yearly pay in India (LPA). Demo estimates, not real market data.</div><div class="pills">${['Fresher (0–2 yrs)','Mid (3–6 yrs)','Senior (7+ yrs)'].map((t,i)=>`<button class="btn ${L==i?'fill':''}" data-slv="${i}">${t}</button>`).join('')}</div></div><div class="card">${SAL.map(x=>`<div class="item"><div class="row"><b style="flex:1">${x[0]}</b><span>₹${(x[1]*m).toFixed(1)}–${(x[2]*m).toFixed(1)} LPA</span></div><div style="height:8px;background:var(--hv);border-radius:4px;margin-top:6px;position:relative"><div style="position:absolute;height:8px;border-radius:4px;background:var(--pr);left:${x[1]*m/mx*100}%;width:${(x[2]-x[1])*m/mx*100}%"></div></div></div>`).join('')}</div>`}
+function groups(){return lst('Groups',GR,'gr','✓ Joined','Join')}
+function news(){return lst('Newsletters',NL,'nl','✓ Subscribed','Subscribe')}
+function events(){return lst('Events',EV,'ev','✓ Attending','Attend')}
+function dev(){const A=(u,t,c='btn')=>`<a class="${c}" href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>`,GH='https://github.com/abhinavmaurya12',LF='https://abhinavmaurya12.github.io/LinkForge/',RX='https://abhinavmaurya12.github.io/ReplicaX/';
+return `<div class="card prof dv"><div class="cover"></div><div class="in"><div class="av dvav">AM</div><h2>Abhinav Maurya</h2><div class="mu">@abhinavmaurya12 · Developer of LinkSphere</div><p class="dvp">Hi! 👋 I’m the developer behind LinkSphere, a lightweight LinkedIn-style networking app that runs entirely in your browser. I enjoy building useful tools and sharing my code with others.</p><div class="dvr">${A(GH,'View GitHub profile','btn fill')}${A('https://github.com/abhinavmaurya12/LinkSphere','📁 Repositories')}${A(LF,'🚀 LinkForge')}${A(RX,'🧬 ReplicaX')}${A(GH+'?tab=followers','⭐ Follow')}</div></div></div>
+<div class="card dvc"><b>👨‍💻 About me</b><p>Developer and open-source enthusiast who likes turning ideas into working software.</p></div>
+<div class="card dvc"><b>🌐 About LinkSphere</b><div class="st">A global sphere for professional networking.</div><p>LinkSphere is a lightweight LinkedIn-style networking app that runs entirely in your browser as a single HTML file. Build your profile, grow your network, find jobs and stay in touch, with everything saved locally on your device.</p><ul class="dvu"><li>📰 <b>Feed:</b> share posts, polls and articles, react, comment and repost</li><li>👥 <b>My Network:</b> send and accept invitations, follow people and pages, join groups and events, read newsletters</li><li>💼 <b>Jobs:</b> browse openings, save and apply, post your own job and set job alerts</li><li>💬 <b>Messaging:</b> chat with your connections, with unread badges and starred chats</li><li>🔔 <b>Notifications:</b> see activity on your posts and network</li><li>👤 <b>Profile:</b> photo, cover, headline, about, experience, education and skills</li><li>🌗 <b>Light and dark mode:</b> works on desktop and mobile</li></ul><p class="mu">Demo project, not affiliated with LinkedIn. Accounts and data stay only in this browser.</p>${A('https://github.com/abhinavmaurya12/LinkSphere','View source on GitHub ↗','btn fill')}</div>
+<div class="card dvc dvl"><b>Connect</b><div class="dvr">${A(GH,'🐙 GitHub')}${A('https://www.linkedin.com/in/abhinavmaurya1/','💼 LinkedIn')}${A('https://www.instagram.com/_abhinav_830_','📸 Instagram')}</div></div>
+<div class="card dvc"><b>LinkForge</b><div class="st">All My Projects. One Destination. 🚀</div><p>LinkForge is a centralized showcase for my live websites and web development projects. It brings all my deployed projects together in one place, allowing visitors to explore my work and access live demos without searching through multiple repositories.</p>${A(LF,'Visit LinkForge ↗','btn fill')}</div>
+<div class="card dvc"><b>🚀 ReplicaX</b><div class="st">One Platform. Multiple Website Replicas.</div><p>ReplicaX is a web development project dedicated to recreating and exploring popular website designs through frontend development. It serves as a growing collection of website replicas built to practice UI/UX design, responsive layouts, and modern web development techniques.</p>${A(RX,'Visit ReplicaX ↗','btn fill')}</div>`}
+function sett(){const S=D.set=D.set||{},tg=(k,l)=>`<div class="item row"><span style="flex:1">${l}</span><button class="btn ${S[k]===0?'':'fill'}" data-st="${k}">${S[k]===0?'Off':'On'}</button></div>`;
+return `<div class="card"><b style="font-size:18px">⚙️ Settings &amp; Privacy</b><div class="mu">Saved only in this browser.</div></div><div class="card"><b>Display</b><div class="item row"><span style="flex:1">Theme (light is the default)</span><button class="btn" data-th>◐ Switch light / dark</button></div></div><div class="card"><b>Visibility</b><div class="item row"><span style="flex:1">Who can see your profile</span><button class="btn" data-pv>${S.pv||'Anyone'} ▾</button></div>${tg('oc','Show when you are online')}${tg('rr','Share read receipts')}</div><div class="card"><b>Notifications</b>${tg('nj','Job recommendations')}${tg('nm','Messages')}${tg('nc','Connection requests')}${tg('np','Reactions and comments on your posts')}</div><div class="card"><b>Data</b><div class="item row"><span style="flex:1">Download a copy of your data</span><button class="btn" data-dl>Download</button></div></div>`}
+const INFO={'About':'LinkSphere is a demo professional networking app built as a single HTML file. It is not affiliated with LinkedIn.','Accessibility':'LinkSphere supports keyboard navigation, readable contrast in light and dark mode, and a layout that adapts to phones and desktops.','Help Center':'FAQ|How do I connect with someone? Open My Network and press Connect.|How do I post? Use Start a post on the Home page.|How do I change the theme? Open Me, then Settings & Privacy.|Where is my data stored? Only in this browser.','Privacy & Terms':'Accounts and posts are stored only in your browser (local storage). Nothing is sent to a server. Clearing your browser data removes your account.','Ad Choices':'LinkSphere does not show ads.','Advertising':'LinkSphere does not sell advertising. This is a demo project.','Business Services':'Use the For Business menu to explore Jobs, Groups, Events, Newsletters, Pages, Premium and Learning.','Get the LinkSphere app':'LinkSphere works in any modern mobile browser. Use Add to Home Screen to keep it handy.'};
+function info(){const k=D.fkp||'About',t=INFO[k]||INFO.About,a=t.split('|');return `<div class="card"><b style="font-size:18px">${esc(k)}</b>${a[0]=='FAQ'?a.slice(1).map(x=>`<div class="item">${esc(x)}</div>`).join(''):`<p style="margin-top:8px">${esc(t)}</p>`}</div>`}
+const QZ=[['Java',[['Which keyword prevents a method from being overridden?',['static','final','private','abstract'],1],['Which collection keeps insertion order and allows duplicates?',['HashSet','TreeSet','ArrayList','HashMap'],2],['What is the default value of an int field?',['null','0','undefined','-1'],1],['Which of these is NOT a Java primitive?',['int','boolean','String','char'],2]]],['HTML & CSS',[['Which tag defines the largest heading?',['<h6>','<h1>','<head>','<header>'],1],['Which CSS property changes text colour?',['font-color','text-color','color','fg'],2],['Which layout model suits one-dimensional rows or columns?',['Flexbox','Float','Table','Inline'],0],['Which attribute helps screen readers describe an image?',['title','src','alt','href'],2]]],['SQL',[['Which clause filters grouped rows?',['WHERE','HAVING','ORDER BY','LIMIT'],1],['Which join returns only matching rows?',['LEFT JOIN','FULL JOIN','INNER JOIN','CROSS JOIN'],2],['Which keyword removes duplicate rows?',['UNIQUE','DISTINCT','DIFFERENT','ONLY'],1],['Which function counts rows?',['SUM()','COUNT()','TOTAL()','ROWS()'],1]]]];
+function skillT(){D.qa=D.qa||{};D.qr=D.qr||{};return `<div class="card"><b style="font-size:18px">🏅 Skill assessments</b><div class="mu">Answer 4 questions per skill. Score 3 or more to pass and earn a badge (demo).</div></div>`+QZ.map((z,t)=>{const r=D.qr[t],a=D.qa[t]||[];return `<div class="card"><div class="row"><b style="flex:1">${z[0]}</b>${r!=null?`<span class="pill">${r>=3?'🏅 Passed':'Not passed'} · ${r}/${z[1].length}</span>`:''}</div>`+(r!=null?`<div class="mu" style="margin:6px 0 10px">${r>=3?'Badge earned. Nice work!':'You need 3 of 4 to pass. Try again.'}</div><button class="btn" data-qt="${t}">Retake</button>`:z[1].map((q,i)=>`<div style="margin-top:10px"><b>${i+1}. ${esc(q[0])}</b>${q[1].map((o,j)=>`<button class="btn ${a[i]===j?'fill':''}" style="display:block;width:100%;text-align:left;margin-top:6px;border-radius:8px" data-qa="${t}:${i}:${j}">${esc(o)}</button>`).join('')}</div>`).join('')+`<button class="btn fill" style="margin-top:12px" data-qs="${t}" ${z[1].every((q,i)=>a[i]!=null)?'':'disabled'}>Submit</button>`)+'</div>'}).join('')}
+function resumeV(){const ex=D.exp.map(x=>Array.isArray(x)?{t:x[0],c:x[1],dt:x[2]}:x),ed=D.edu.map(x=>Array.isArray(x)?{s:x[0],deg:x[1],dt:x[2]}:x),H=t=>`<div style="font-weight:700;color:var(--pr);border-bottom:1px solid var(--bd);margin:14px 0 6px;padding-bottom:2px">${t}</div>`,no=t=>`<div class="mu">${t}</div>`;
+return `<div class="card noprint"><b style="font-size:18px">📄 Resume Builder</b><div class="mu">Built from your profile. Add experience, education and skills on your profile to fill it in.</div><div class="pills"><button class="btn fill" data-rpr>🖨 Print / Save as PDF</button><button class="btn" data-rcp>📋 Copy as text</button></div></div><div class="card" id="rs" style="padding:24px"><h2>${esc(U.name)}</h2><div class="mu">${esc(D.headline)} · ${esc(D.loc)}</div><div class="mu">${esc(U.email)}</div>${D.about?H('Summary')+`<div style="white-space:pre-wrap">${esc(D.about)}</div>`:''}${H('Experience')}${ex.map(x=>`<div><b>${esc(x.t||'')}</b> · ${esc(x.c||'')}<div class="mu">${esc(x.dt||'')}</div></div>`).join('')||no('No experience added yet.')}${H('Education')}${ed.map(x=>`<div><b>${esc(x.s||'')}</b> · ${esc(x.deg||'')}<div class="mu">${esc(x.dt||'')}</div></div>`).join('')||no('No education added yet.')}${H('Skills')}<div>${D.skills.map(esc).join(' · ')||no('No skills added yet.')}</div></div>`}
+const PLANS=[['Career','₹1,999/mo','See who viewed your profile, get InMail credits and top applicant insights.'],['Business','₹2,999/mo','Grow your network with advanced search and business insights.'],['Sales Navigator','₹6,499/mo','Lead recommendations and real-time sales alerts.'],['Recruiter Lite','₹9,999/mo','Find and reach candidates with smart filters.']];
+function prem(){return `<div class="card"><b style="font-size:18px">⭐ LinkSphere Premium</b><div class="mu">Demo plans: no payment is taken. Pick one to try it.</div></div><div class="grid">${PLANS.map(p=>`<div class="card"><b>${p[0]}</b><div style="color:#915907;font-weight:700;margin:4px 0">${p[1]}</div><div class="mu" style="margin-bottom:10px">${p[2]}</div><button class="btn ${D.premP==p[0]?'':'fill'}" data-ptry="${p[0]}">${D.premP==p[0]?'✓ Active · Cancel':'Try free for 1 month'}</button></div>`).join('')}</div>`}
+const COURSES=[['Java Programming Foundations','2h 10m','☕'],['Spring Boot Essentials','3h 05m','🍃'],['HTML, CSS and JavaScript Basics','4h 20m','🌐'],['SQL for Data Analysis','1h 45m','🗄️'],['Git and GitHub Fundamentals','1h 10m','🐙'],['Communication Skills for Engineers','55m','🎤']];
+function learn(){D.lrn=D.lrn||{};return `<div class="card"><b style="font-size:18px">🎓 LinkSphere Learning</b><div class="mu">Short courses to build in-demand skills. Progress is saved in this browser.</div></div>`+COURSES.map((c,i)=>{const v=D.lrn[i]||0;return `<div class="card row"><div class="gm"><span class="ic" style="background:${col[i%6]}">${c[2]}</span></div><div style="flex:1;min-width:0"><b>${c[0]}</b><div class="mu">${c[1]} · ${v}% complete</div><div style="height:6px;background:var(--hv);border-radius:3px;margin-top:6px"><div style="height:6px;width:${v}%;background:var(--pr);border-radius:3px"></div></div></div><button class="btn ${v>=100?'':'fill'}" data-lrn="${i}">${v>=100?'✓ Completed':v?'Continue':'Start'}</button></div>`}).join('')}
+function viewers(){const t=['2h ago','5h ago','1d ago','1d ago','2d ago','3d ago'];return `<div class="card"><b>Who viewed your profile</b><div class="mu">6 viewers in the past 90 days</div>`+PEOPLE.slice(0,6).map((p,i)=>`<div class="item row">${av(p[0],i+1)}<div style="flex:1">${nm(p[0])}<div class="mu">${p[1]} · ${t[i]}</div></div>${cnBtn(p[0])}</div>`).join('')+'</div>'}
+function imp(){const m=mine();return `<div class="card"><b>Post impressions</b><div class="mu">Past 7 days</div><div class="row" style="margin-top:10px;gap:24px"><div><b style="font-size:24px">${imps()}</b><div class="mu">Impressions</div></div><div><b style="font-size:24px">${m.reduce((a,p)=>a+p.l,0)}</b><div class="mu">Reactions</div></div><div><b style="font-size:24px">${m.reduce((a,p)=>a+p.c.length,0)}</b><div class="mu">Comments</div></div></div></div><div class="card"><b>Your posts</b>`+(m.map(p=>`<div class="item"><div>${tag(p.t)}</div><div class="mu">${p.liked?R[p.liked-1][0]:'👍'} ${p.l} · 💬 ${p.c.length} · ${p.l*12+p.c.length*8} impressions</div></div>`).join('')||'<div class="mu">Create a post to see how it performs.</div>')+'</div>'}
+function savedV(){const sp=D.posts.filter(p=>D.sp[p.id]),sj=JOBS.map((j,i)=>[j,i]).filter(([j,i])=>D.saved[i]);return `<div class="card"><b>Saved items</b></div><div class="card"><b>Posts (${sp.length})</b>`+(sp.map(p=>`<div class="item"><b>${esc(p.n)}</b><div>${tag(p.t)}</div></div>`).join('')||'<div class="mu">No saved posts. Tap 🔖 Save on a post.</div>')+`</div><div class="card"><b>Jobs (${sj.length})</b>`+(sj.map(([j])=>`<div class="item"><b>${esc(j[0])}</b><div class="mu">${esc(j[1])} · ${esc(j[2])}</div></div>`).join('')||'<div class="mu">No saved jobs.</div>')+'</div>'}
+const ASK={exp:['Job title','Company','Dates (e.g. 2024–Present)'],edu:['School','Degree','Years'],cert:['Certification name','Issuing organization','Year'],proj:['Project name','Description','Link or year'],lang:['Language','Proficiency (e.g. Fluent, Native)','Notes (optional)'],vol:['Role','Organization','Years'],rec:['Recommended by','Relationship (e.g. Manager)','Recommendation text'],feat:['Title','Description','Link']};
+const extra=()=>[['feat','Featured'],['cert','Licenses & certifications'],['proj','Projects'],['lang','Languages'],['vol','Volunteer experience'],['rec','Recommendations']].map(a=>`<div class="card"><div class="row"><b style="flex:1">${a[1]}</b><button class="btn" data-add="${a[0]}">+ Add</button></div>${D[a[0]].map((x,i)=>`<div class="item row"><div style="flex:1"><b>${esc(x[0])}</b><div>${esc(x[1])}</div><div class="mu">${esc(x[2])}</div></div><button class="btn" data-rm="${a[0]}:${i}">✕</button></div>`).join('')||'<div class="mu">Nothing added yet.</div>'}</div>`).join('');
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b){if(D&&MENU){MENU=null;app()}return}const d=b.dataset,id=b.id;
+ if(id=='sw'){mode=mode=='in'?'up':'in';return authView()}
+ if(id=='go')return doAuth();
+ if(id=='th'||'th' in d){const r=document.documentElement;r.dataset.theme=getComputedStyle(r).colorScheme=='dark'?'light':'dark';W('lu_theme',r.dataset.theme);MENU=null;DR=0;if(D)app();return}
+ if(id=='lo'||'lo' in d){W('lu_me',null);DR=0;MENU=null;CM=0;U=D=null;mode='in';return authView()}
+ if(!D)return;
+ if(!d.mn)MENU=null;
+ if(!d.rpk&&!d.react)RM=null;
+ if(!('dr' in d))DR=0;const mi0=$('#mi');if(mi0)MD=mi0.value;const np0=$('#np');if(np0&&id!='pb')PTXT=np0.value;if(d.t=='msg'){CO=0;const c0=D.chats[D.chat];if(c0&&wide())delete D.unr[c0[0]]}
+ if(d.t){D.tab=d.t;if(d.t=='bell')D.unread=0}
+ else if('dr' in d){DR=1}
+ else if('drx' in d){}
+ else if('cmx' in d){CM=0}
+ else if('vis' in d){D.vis=D.vis=='Anyone'?'Connections only':'Anyone'}
+ else if('art' in d){const t=prompt('Article title');if(!t||!t.trim())return;const b=prompt('Write your article')||'';D.posts.unshift({id:Date.now(),n:U.name,r:D.headline,t:'📝 '+t.trim()+'\n\n'+b.trim(),l:0,c:[],liked:0,time:'now',mine:1,vis:D.vis})}
+ else if(d.cl){const[pid,ci]=d.cl.split(':'),c=D.posts.find(x=>x.id==pid).c[+ci];c.lk=!c.lk;c.l=Math.max(0,(c.l||0)+(c.lk?1:-1))}
+ else if(d.cr){RO[d.cr]=!RO[d.cr];FOCI=d.cr}
+ else if(d.nf){D.nf=d.nf}
+ else if(d.nd){D.notes.splice(+d.nd,1)}
+ else if(d.em){const mi=$('#mi');if(mi){mi.value+=d.em;mi.focus();mi.dispatchEvent(new Event('input',{bubbles:true}))}return}
+ else if(d.mg){D.tab='net';D.ntab=d.mg}
+ else if(d.cs){D.csort=d.cs}
+ else if(d.ff){D.fft=d.ff}
+ else if(d.it){D.invt=d.it}
+ else if(d.cuf){D.cuf=d.cuf}
+ else if(d.cu){const it=cuList()[+d.cu];if(it){D.cu[it[0]+'|'+it[1][2]]=1;let i=D.chats.findIndex(c=>c[0]==it[0]);if(i<0){D.chats.push([it[0],[]]);i=D.chats.length-1}D.chats[i][1].push([it[1][4],1,Date.now()]);note('Message sent to '+it[0]+'.')}}
+ else if(d.sg){const g=GAMES[+d.sg][0];if(D.games[g])delete D.games[g];else{D.games[g]=1;note('You solved '+g+'! 🎉')}}
+ else if('prem' in d){D.tab='prem'}
+ else if(d.pf){D.back=D.tab=='pf'?D.back:D.tab;D.pf=d.pf;D.tab='pf'}
+ else if(id=='pb'){const v=$('#np').value.trim();if(!v&&!PIMG)return;D.posts.unshift({id:Date.now(),n:U.name,r:D.headline,t:v,img:PIMG||undefined,l:0,c:[],liked:0,time:'now',mine:1,vis:D.vis});PIMG=null;PTXT='';CM=0}
+ else if('pl' in d){const t=prompt('Poll question');if(!t||!t.trim())return;const o=(prompt('Options separated by commas (2–4)')||'').split(',').map(x=>x.trim()).filter(Boolean).slice(0,4);if(o.length<2){alert('Add at least 2 options.');return}D.posts.unshift({id:Date.now(),n:U.name,r:D.headline,t:t.trim(),poll:o.map(x=>[x,0]),l:0,c:[],liked:0,time:'now',mine:1,vis:D.vis});PTXT='';CM=0}
+ else if(d.vote){const[pid,i]=d.vote.split(':'),p=D.posts.find(x=>x.id==pid);if(p&&D.vote[p.id]==null){p.poll[+i][1]++;D.vote[p.id]=+i}}
+ else if(d.uv){const p=D.posts.find(x=>x.id==d.uv),v=D.vote[d.uv];if(p&&v!=null){p.poll[v][1]--;delete D.vote[d.uv]}}
+ else if(d.so){D.sort=d.so}
+ else if(d.hide){D.hid[d.hide]?delete D.hid[d.hide]:D.hid[d.hide]=1}
+ else if('pi' in d){PTXT=$('#np').value;$('#f_post').click();return}
+ else if('pir' in d){PTXT=$('#np').value;PIMG=null}
+ else if(d.rpk){RM=RM==d.rpk?null:d.rpk}
+ else if(d.react){const[pid,k]=d.react.split(':'),p=D.posts.find(x=>x.id==pid),cur=p.liked,n=+k+1;if(cur==n){p.liked=0;p.l--}else{if(!cur)p.l++;p.liked=n;if(!p.mine)note('You reacted '+R[+k][1]+' to '+p.n+'’s post.')}RM=null}
+ else if(d.like){const p=D.posts.find(x=>x.id==d.like);if(p.liked){p.liked=0;p.l--}else{p.liked=1;p.l++;if(!p.mine)note('You liked '+p.n+'’s post.')}}
+ else if(d.cm){OC[d.cm]=!OC[d.cm];if(OC[d.cm])FOCI=d.cm}
+ else if(d.rpq){const p=D.posts.find(x=>x.id==d.rpq);if(p){D.posts.unshift({id:Date.now(),n:U.name,r:D.headline,t:'',rep:{n:p.n,r:p.r,t:p.t,img:p.img},l:0,c:[],liked:0,time:'now',mine:1,vis:D.vis});p.rpc=(p.rpc||0)+1;note('You reposted '+p.n+'’s post.')}}
+ else if(d.rp){const p=D.posts.find(x=>x.id==d.rp),th=prompt('Add your thoughts');if(th===null||!p)return;D.posts.unshift({id:Date.now(),n:U.name,r:D.headline,t:th.trim(),rep:{n:p.n,r:p.r,t:p.t,img:p.img},l:0,c:[],liked:0,time:'now',mine:1,vis:D.vis});p.rpc=(p.rpc||0)+1;note('You reposted '+p.n+'’s post.')}
+ else if('sh' in d){try{navigator.clipboard.writeText(location.href)}catch(x){}alert('Link copied')}
+ else if(d.del){D.posts=D.posts.filter(x=>x.id!=d.del)}
+ else if(d.bk){D.sp[d.bk]?delete D.sp[d.bk]:D.sp[d.bk]=1}
+ else if(d.ep){const p=D.posts.find(x=>x.id==d.ep),v=prompt('Edit post',p.t);if(v&&v.trim())p.t=v.trim()}
+ else if(d.tg){q=d.tg;D.tab='home'}
+ else if('otw' in d){D.otw=!D.otw}
+ else if('nmsg' in d){const cs=Object.keys(D.conn).filter(k=>D.conn[k]);if(!cs.length){alert('Connect with someone first, then you can message them.');return}const v=(prompt('Message who?\n'+cs.join(', '))||'').trim().toLowerCase(),n=cs.find(c=>c.toLowerCase()==v);if(!n){if(v)alert('No connection with that name.');return}let i=D.chats.findIndex(c=>c[0]==n);if(i<0){D.chats.push([n,[]]);i=D.chats.length-1}D.chat=i;CO=1;MD=''}
+ else if('dc' in d){const c=D.chats[D.chat];if(c&&confirm('Delete conversation with '+c[0]+'?')){D.chats.splice(D.chat,1);D.chat=0;CO=0}}
+ else if(d.msgto){let i=D.chats.findIndex(c=>c[0]==d.msgto);if(i<0){D.chats.push([d.msgto,[]]);i=D.chats.length-1}D.chat=i;CO=1;MD='';delete D.unr[d.msgto];D.back=D.tab=='pf'?D.back:D.tab;D.tab='msg'}
+ else if(d.rmc){delete D.conn[d.rmc]}
+ else if(d.cr){const k=d.cr,kind=CR[k],n=(prompt('Name of your '+kind)||'').trim();if(!n)return;const x=(prompt(k=='ev'?'Date and time (e.g. Sat, 5 Dec · 6:00 PM · Online)':k=='gr'?'Short description':'How often (e.g. Every Friday)')||'').trim()||(k=='gr'?'New group':k=='ev'?'Date to be announced':'New newsletter'),arr={gr:GR,ev:EV,nl:NL}[k],it=[n,k=='gr'?'1 member · '+x:x];arr.push(it);D.mk=D.mk||{gr:[],ev:[],nl:[]};D.mk[k].push(it);D[k][arr.length-1]=1;note('You created the '+kind+' “'+n+'”.')}
+ else if('slv' in d){D.sl=+d.slv}
+ else if(d.qa){D.qa=D.qa||{};const[t,i,j]=d.qa.split(':').map(Number);(D.qa[t]=D.qa[t]||[])[i]=j}
+ else if(d.qs){const t=+d.qs,a=(D.qa||{})[t]||[],z=QZ[t][1];if(!z.every((q,i)=>a[i]!=null))return;D.qr=D.qr||{};D.qr[t]=z.filter((q,i)=>a[i]===q[2]).length;if(D.qr[t]>=3)note('You passed the '+QZ[t][0]+' skill assessment. 🏅')}
+ else if(d.qt){delete D.qr[+d.qt];delete D.qa[+d.qt]}
+ else if('rpr' in d){setTimeout(()=>print(),60);return}
+ else if('rcp' in d){const el=$('#rs');try{navigator.clipboard.writeText(el?el.innerText:'');alert('Resume copied.')}catch(e){alert('Copy is not available here.')}return}
+ else if(d.fk){D.fkp=d.fk;D.tab='info'}
+ else if(d.st){const S=D.set=D.set||{};S[d.st]=S[d.st]===0?1:0}
+ else if('pv' in d){const S=D.set=D.set||{};S.pv=S.pv=='Connections only'?'Anyone':'Connections only'}
+ else if('dl' in d){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({name:U.name,email:U.email,data:D},null,1)],{type:'application/json'}));a.download='linksphere-data.json';a.click()}catch(e){alert('Download is not available here.')}}
+ else if(d.ptry){D.premP=D.premP==d.ptry?null:d.ptry;if(D.premP)note('Your '+d.ptry+' trial has started (demo).')}
+ else if('lrn' in d){const i=+d.lrn;D.lrn=D.lrn||{};if((D.lrn[i]||0)<100){D.lrn[i]=Math.min(100,(D.lrn[i]||0)+25);if(D.lrn[i]==100)note('You completed “'+COURSES[i][0]+'”. 🎓')}}
+ else if(d.fht){D.ht[d.fht]?delete D.ht[d.fht]:D.ht[d.fht]=1}
+ else if(d.v){D.tab=d.v}
+ else if(d.jn){const[k,i]=d.jn.split(':');D[k][i]?delete D[k][i]:D[k][i]=1}
+ else if('pj' in d){const a=['Job title','Company','Location (e.g. Pune · Remote)','Salary','Short description (optional)'].map(k=>prompt(k));if(a[0]&&a[0].trim()&&a[1]&&a[1].trim()){const j=a.map(x=>(x||'').trim());JOBS.push(j);D.myjobs.push(j);note('Your job post “'+j[0]+'” is live.')}}
+ else if('ja' in d){const k=prompt('Job alert keyword (e.g. java, remote, intern)');if(k&&k.trim()&&!D.alerts.includes(k.trim())){D.alerts.push(k.trim());note('Job alert created for “'+k.trim()+'”.')}}
+ else if(d.jadel){D.alerts.splice(+d.jadel,1)}
+ else if(d.jh){q=d.jh;D.jtab='all';D.jw='all'}
+ else if(d.jw){D.jw=d.jw}
+ else if(d.jd){JX[d.jd]=!JX[d.jd]}
+ else if(d.wd){delete D.applied[d.wd];note('Application withdrawn for '+JOBS[d.wd][0]+'.')}
+ else if(d.ac){D.inv=D.inv.filter(n=>n!=d.ac);delete D.pend[d.ac];D.conn[d.ac]=1;note('You are now connected with '+d.ac+'.')}
+ else if(d.ig){D.inv=D.inv.filter(n=>n!=d.ig)}
+ else if(d.cn){const n=d.cn;if(D.conn[n]){delete D.conn[n]}else if(D.pend[n]){delete D.pend[n]}else{D.pend[n]=1;note('Invitation sent to '+n+'.');sched(n)}}
+ else if(d.fl){D.fol[d.fl]?delete D.fol[d.fl]:(D.fol[d.fl]=1,note('You are now following '+d.fl+'.'))}
+ else if(d.en){const[n,i]=[d.en.slice(0,d.en.lastIndexOf(':')),d.en.slice(d.en.lastIndexOf(':')+1)];const k=n+':'+i;if(D.en[k])delete D.en[k];else{D.en[k]=1;note('You endorsed '+n+' for '+PX[n].skills[+i]+'.')}}
+ else if(d.nt){D.ntab=d.nt}
+ else if('nc' in d){D.notes=[];D.unread=0}
+ else if('pdf' in d){save();window.print();return}
+ else if('shp' in d){try{navigator.clipboard.writeText('https://linksphere.app/in/'+(D.slug||slugOf(U.name)))}catch(x){}alert('Profile link copied')}
+ else if(d.jt){D.jtab=d.jt}
+ else if(d.sv){D.saved[d.sv]?delete D.saved[d.sv]:D.saved[d.sv]=1}
+ else if(d.ap){const ph=prompt('Phone number for the recruiter');if(ph===null)return;const nt=prompt('Add a short note to the recruiter (optional)')||'';D.applied[d.ap]={ph:ph.trim(),nt:nt.trim(),at:new Date().toLocaleDateString()};note('Application sent for '+JOBS[d.ap][0]+' at '+JOBS[d.ap][1]+'.')}
+ else if(d.ex){EX[d.ex]=1}
+ else if(d.lm){LM[d.lm]=1}
+ else if(d.cpost){postC(d.cpost);return}
+ else if(d.sm){SM=+d.sm}
+ else if('sx' in d){SM=null}
+ else if(d.ssend){const p=D.posts.find(x=>x.id==SM);if(p){let i=D.chats.findIndex(c=>c[0]==d.ssend);if(i<0){D.chats.push([d.ssend,[]]);i=D.chats.length-1}D.chats[i][1].push(['Shared a post by '+p.n+': '+(p.t||'').slice(0,120)+((p.t||'').length>120?'…':''),1,Date.now()]);SMS[p.id+'|'+d.ssend]=1;note('Post sent to '+d.ssend+'.')}}
+ else if(d.fa){openFM(d.fa,-1)}
+ else if(d.fe){const[k,i]=d.fe.split(':');openFM(k,+i)}
+ else if('fx' in d){FM=null}
+ else if('fs' in d){fsave();return}
+ else if('fdel' in d){if(FM&&FM.i>=0&&confirm('Delete this entry?')){if(FM.k=='skills')D.skills.splice(FM.i,1);else D[FM.k].splice(FM.i,1);FM=null}}
+ else if(d.ed){openFM(d.ed=='about'?'about':'intro',-1)}
+ else if(d.co){D.back=D.tab=='co'?D.back:D.tab;D.co=d.co;D.ctab='about';D.tab='co'}
+ else if(d.ctb){D.ctab=d.ctb}
+ else if(d.st){D.stab=d.st}
+ else if(d.sj){const j=JOBS[+d.sj];if(j){D.tab='jobs';q=j[0];D.jtab='all';D.jw='all';JX[d.sj]=1}}
+ else if(d.cpl){try{navigator.clipboard.writeText(location.href+'#post-'+d.cpl)}catch(x){}alert('Link to post copied')}
+ else if(d.rpt){D.hid[d.rpt]=1;note('Thanks for reporting. We will review this post.')}
+ else if(d.cx){const[pid,ci]=d.cx.split(':');D.posts.find(x=>x.id==pid).c.splice(+ci,1)}
+ else if(d.md){const c=D.chats[D.chat];if(c&&confirm('Delete this message?'))c[1].splice(+d.md,1)}
+ else if('cb' in d){CO=0}
+ else if('emo' in d){EMO=!EMO}
+ else if(d.mf){D.mf=d.mf}
+ else if(d.star){D.star[d.star]?delete D.star[d.star]:D.star[d.star]=1}
+ else if(d.ch){D.chat=+d.ch;CO=1;MD='';const c1=D.chats[D.chat];if(c1)delete D.unr[c1[0]]}
+ else if(id=='ms2'){const v=$('#mi').value.trim(),c=D.chats[D.chat];if(!v||!c)return;c[1].push([v,1,Date.now()]);MD='';MFOC=1;TY=c[0];setTimeout(()=>{TY=null;c[1].push(['Sounds good, let’s catch up soon!',0,Date.now()]);if(!D)return;if(!(D.tab=='msg'&&D.chats[D.chat]===c&&(CO||wide())))D.unr[c[0]]=(D.unr[c[0]]||0)+1;save();if(D.tab=='msg')view();else{const a=document.activeElement;if(!a||!/INPUT|TEXTAREA/.test(a.tagName))app()}},1600)}
+ else if(d.ed){const v=prompt('Update '+d.ed,D[d.ed]);if(v!==null)D[d.ed]=v.trim()}
+ else if(d.add){if(d.add=='skills'){const v=prompt('Skill');if(v&&v.trim())D.skills.push(v.trim())}else{const a=ASK[d.add].map(k=>prompt(k));if(a[0]&&a[0].trim())D[d.add].push(a.map(x=>(x||'').trim()))}}
+ else if(d.mn){MENU=MENU==d.mn?null:d.mn}
+ else if(d.oa){if(d.oa=='job'){editOT()}else D.tab='jobs'}
+ else if('ote' in d){editOT()}
+ else if('otv' in d){D.ot.vis=D.ot.vis=='Recruiters only'?'All members':'Recruiters only'}
+ else if('otd' in d){OTD=!OTD}
+ else if('cp' in d){D.tab='home';CM=1;setTimeout(()=>{const n=$('#np');if(n)n.focus()},0)}
+ else if(d.at){ATAB=d.at}
+ else if(d.up){$('#f_'+d.up).click();return}
+ else if(d.rm=='photo'||d.rm=='cover'){delete D[d.rm]}
+ else if(d.rm){const[k,i]=d.rm.split(':');D[k].splice(+i,1)}
+ else return;
+ save();app()});
+function fit(file,w,h,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d'),k=Math.max(w/im.width,h/im.height),sw=w/k,sh=h/k;x.drawImage(im,(im.width-sw)/2,(im.height-sh)/2,sw,sh,0,0,w,h);cb(c.toDataURL('image/jpeg',.82))};im.onerror=()=>alert('Could not read that image.');im.src=r.result};r.readAsDataURL(file)}
+document.addEventListener('change',e=>{const t=e.target;if(FM&&t.dataset&&t.dataset.f){if(t.dataset.f=='cur')app();return}if(t.id=='f_post'&&D){const f=t.files[0];if(!f)return;if(!/^image\//.test(f.type))return alert('Please choose an image file.');const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,800/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);PIMG=c.toDataURL('image/jpeg',.8);view()};im.src=r.result};r.readAsDataURL(f);return}const k=t.id=='f_photo'?'photo':t.id=='f_cover'?'cover':null;if(!k||!D)return;const f=t.files[0];if(!f)return;if(!/^image\//.test(f.type))return alert('Please choose an image file.');
+ fit(f,k=='photo'?400:1200,k=='photo'?400:300,u=>{D[k]=u;save();app()})});
+document.addEventListener('input',e=>{if(e.target.dataset&&e.target.dataset.ci!=null){CD[e.target.dataset.ci]=e.target.value;const b=e.target.nextElementSibling;if(b)b.disabled=!e.target.value.trim();return}if(FM&&e.target.dataset&&e.target.dataset.f){const t=e.target;FM.v[t.dataset.f]=t.type=='checkbox'?t.checked:t.value;return}if(e.target.id=='mi'){MD=e.target.value;const b=$('#ms2');if(b)b.disabled=!MD.trim();e.target.style.height='auto';e.target.style.height=Math.min(120,e.target.scrollHeight)+'px';return}if(e.target.id=='cs2'){CS=e.target.value;const l=$('#cl2');if(l)l.innerHTML=chatList();return}if(e.target.id=='cq'){CQ=e.target.value;const l=$('#cl');if(l)l.innerHTML=connList();return}if(e.target.id=='q'){q=e.target.value;if(D&&(D.tab=='home'||D.tab=='jobs'||D.tab=='net'||D.tab=='srch'))view()}});
+document.addEventListener('keydown',e=>{if(e.key=='Escape'&&(FM||SM)){FM=null;SM=null;app();return}if(e.key=='Enter'){if(e.target.closest('.auth'))doAuth();else if(e.target.dataset&&e.target.dataset.ci!=null){e.preventDefault();postC(e.target.dataset.ci)}else if(FM&&e.target.dataset&&e.target.dataset.f&&e.target.tagName=='INPUT'){e.preventDefault();fsave()}else if(e.target.id=='q'&&D&&e.target.value.trim()){q=e.target.value.trim();D.tab='srch';D.stab='all';save();app()}else if(e.target.id=='mi'&&!e.shiftKey&&wide()){e.preventDefault();$('#ms2').click()}}});
+boot();
+</script></body></html>
